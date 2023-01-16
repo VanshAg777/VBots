@@ -19,10 +19,15 @@ p.loadSDF("world.sdf")
 pyrosim.Prepare_To_Simulate(robotId)
 
 backLegSensorValues = numpy.zeros(100)
+frontLegSensorValues = numpy.zeros(100)
+
 
 for i in range(0,100):
     p.stepSimulation()
     backLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("BackLeg")
+    frontLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("FrontLeg")
+
+
     # backLegTouch = pyrosim.Get_Touch_Sensor_Value_For_Link("BackLeg")
     # print(backLegTouch)
     time.sleep( 1/60 )
@@ -30,6 +35,7 @@ for i in range(0,100):
 
 
 p.disconnect()
-print(backLegSensorValues)
+# print(backLegSensorValues)
 
 numpy.save("./data/backLegSensorValues.npy", backLegSensorValues)
+numpy.save("./data/frontLegSensorValues.npy", frontLegSensorValues)
