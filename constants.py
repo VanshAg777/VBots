@@ -5,9 +5,11 @@ gravity = -9.8
 
 simLength = 1000
 
-amplitudeBackLeg = numpy.pi/3
+amplitudeBackLeg = numpy.pi/4
 frequencyBackLeg = 10
-phaseOffsetBackLeg = numpy.pi/7
+phaseOffsetBackLeg = 0
+
+# phaseOffsetBackLeg = numpy.pi/7
 
 maxForceBackLeg = 22
 
