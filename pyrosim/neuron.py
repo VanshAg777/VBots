@@ -24,6 +24,10 @@ class NEURON:
 
         self.Set_Value( self.Get_Value() + value )
 
+    def Subtract_From_Value( self, value ):
+
+        self.Set_Value( self.Get_Value() - value )
+
     def Get_Joint_Name(self):
 
         return self.jointName
@@ -82,6 +86,9 @@ class NEURON:
     def Allow_Presynaptic_Neuron_To_Influence_Me(self, currentSynapseWeight, presynapticNeuronValue):
         newValue = currentSynapseWeight * presynapticNeuronValue
         self.Add_To_Value(newValue)
+        # self.Subtract_From_Value(newValue)
+
+        
         
 
 
