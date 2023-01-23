@@ -26,7 +26,7 @@ class SIMULATION:
             self.robot.Think()
             self.robot.Act(t)
         
-            time.sleep( 1/320 )
+            time.sleep( 1/820 )
             # print(t) 
     
     def __del__(self):
