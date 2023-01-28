@@ -4,8 +4,9 @@ import numpy
 import random
 
 class SOLUTION:
-    def __init__(self):
+    def __init__(self, nextAvailableID):
         self.weights = numpy.random.rand(3,2) * 2 - 1
+        self.myID = nextAvailableID
         # print(self.weights, "weightssss")
         # exit()
 
@@ -14,7 +15,7 @@ class SOLUTION:
         self.Create_World() 
         self.Create_Body()
         self.Create_Brain()
-        os.system("python3 simulate.py " + str(DIR_GUI))
+        os.system("python3 simulate.py " + str(DIR_GUI) + " " + str(self.myID) + " &")
         fitnessFile = open("fitness.txt", "r")
         self.fitness = float(fitnessFile.readline())
         fitnessFile.close()
@@ -49,7 +50,8 @@ class SOLUTION:
 
 
     def Create_Brain(self):
-        pyrosim.Start_NeuralNetwork("brain.nndf")
+
+        pyrosim.Start_NeuralNetwork("brain"+str(self.myID)+".nndf")
 
         pyrosim.Send_Sensor_Neuron(name = 0 , linkName = "Torso")
         pyrosim.Send_Sensor_Neuron(name = 1 , linkName = "BackLeg")
@@ -76,5 +78,9 @@ class SOLUTION:
         # randomColumn - two motor neurons
         randomColumn = random.randint(0,1)
         self.weights[randomRow,randomColumn] =  random.random() * 2 - 1
+
+    def Set_ID(self):
+        pass
+
 
             
