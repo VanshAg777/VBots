@@ -8,7 +8,7 @@ class MATERIAL:
 
         self.string1 = '<material name="Cyan">'
 
-        self.string2 = '    <color rgba="0 1.0 1.0 1.0"/>'
+        self.string2 = '    <color rgba="0 0 1 1"/>'
 
         self.string3 = '</material>'
 

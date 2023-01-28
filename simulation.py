@@ -15,7 +15,7 @@ class SIMULATION:
         else:
             self.physicsClient = p.connect(p.GUI)
        
-
+        self.directOrGUI = directOrGUI
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.setGravity(0,0,c.gravity)
 
@@ -29,8 +29,8 @@ class SIMULATION:
             self.robot.Sense(t)
             self.robot.Think()
             self.robot.Act(t)
-        
-            time.sleep( 1/1820 )
+            if self.directOrGUI == "GUI":
+                time.sleep( 1/1820 )
             # print(t) 
     
     def __del__(self):
