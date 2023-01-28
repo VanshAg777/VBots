@@ -21,5 +21,7 @@ maxForceFrontLeg = 22
 
 numberOfGenerations = 10
 
+populationSize = 2
+
 # targetPosition = -(numpy.pi)/4,
 # targetPosition = random.uniform(-(numpy.pi)/2,(numpy.pi)/2),
