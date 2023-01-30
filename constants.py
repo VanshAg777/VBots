@@ -19,9 +19,12 @@ phaseOffsetFrontLeg = 0
 
 maxForceFrontLeg = 22
 
-numberOfGenerations = 10
+numberOfGenerations = 1
 
-populationSize = 10
+populationSize = 1
+
+numSensorNeurons = 3
+numMotorNeurons = 2
 
 # targetPosition = -(numpy.pi)/4,
 # targetPosition = random.uniform(-(numpy.pi)/2,(numpy.pi)/2),

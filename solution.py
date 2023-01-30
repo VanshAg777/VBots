@@ -3,11 +3,13 @@ import pyrosim.pyrosim as pyrosim
 import numpy
 import random
 import time
+import constants as c
+
 
 
 class SOLUTION:
     def __init__(self, nextAvailableID):
-        self.weights = numpy.random.rand(3,2) * 2 - 1
+        self.weights = numpy.random.rand(c.numSensorNeurons,c.numMotorNeurons) * 2 - 1
         self.myID = nextAvailableID
         # print(self.weights, "weightssss")
         # exit()
@@ -60,12 +62,12 @@ class SOLUTION:
         width = 1
         height = 1
 
-        pyrosim.Send_Cube(name="Torso", pos=[1.5,0,1.5] , size=[length,width,height])
-        pyrosim.Send_Joint( name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" , type = "revolute", position = [1,0,1])
-        pyrosim.Send_Cube(name="BackLeg", pos=[-0.5,0,-0.5] , size=[length,width,height])
+        pyrosim.Send_Cube(name="Torso", pos=[0,0,1] , size=[length,width,height])
+        pyrosim.Send_Joint( name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" , type = "revolute", position = [0,-0.5,1])
+        pyrosim.Send_Cube(name="BackLeg", pos=[0,-0.5,0] , size=[0.2,1,0.2])
 
-        pyrosim.Send_Joint( name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" , type = "revolute", position = [2,0,1])
-        pyrosim.Send_Cube(name="FrontLeg", pos=[0.5,0,-0.5] , size=[length,width,height])
+        pyrosim.Send_Joint( name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" , type = "revolute", position = [0,0.5,1])
+        pyrosim.Send_Cube(name="FrontLeg", pos=[0,0.5,0] , size=[0.2,1,0.2])
         pyrosim.End()
 
 
@@ -86,17 +88,17 @@ class SOLUTION:
         # pyrosim.Send_Synapse( sourceNeuronName = 0 , targetNeuronName = 4 , weight = -1.0 )
         # pyrosim.Send_Synapse( sourceNeuronName = 2 , targetNeuronName = 4 , weight = -1.0 )
 
-        for currentRow in range(0,3):
-            for currentColumn in range(0,2):
+        for currentRow in range(0,c.numSensorNeurons):
+            for currentColumn in range(0,c.numMotorNeurons):
                     pyrosim.Send_Synapse( sourceNeuronName = currentRow , targetNeuronName = currentColumn+3 , weight = self.weights[currentRow][currentColumn])
 
         pyrosim.End()
 
     def Mutate(self):
         # randomRow - three sensor neurons
-        randomRow =  random.randint(0,2)
+        randomRow =  random.randint(0,c.numSensorNeurons - 1)
         # randomColumn - two motor neurons
-        randomColumn = random.randint(0,1)
+        randomColumn = random.randint(0,c.numMotorNeurons - 1)
         self.weights[randomRow,randomColumn] =  random.random() * 2 - 1
 
     def Set_ID(self, nextAvailableID):
