@@ -13,17 +13,17 @@ class SOLUTION:
         # exit()
 
 
-    def Evaluate(self, DIR_GUI):
-        self.Create_World() 
-        self.Create_Body()
-        self.Create_Brain()
-        os.system("python3 simulate.py " + str(DIR_GUI) + " " + str(self.myID) + " &")
-        while not os.path.exists("fitness"+str(self.myID)+".txt"):
-            time.sleep(0.01)
-        fitnessFile = open("fitness"+str(self.myID)+".txt", "r")
-        self.fitness = float(fitnessFile.readline())
-        print( self.fitness, "lollllol")
-        fitnessFile.close()
+    # def Evaluate(self, DIR_GUI):
+    #     self.Create_World() 
+    #     self.Create_Body()
+    #     self.Create_Brain()
+    #     os.system("python3 simulate.py " + str(DIR_GUI) + " " + str(self.myID) + " &")
+    #     while not os.path.exists("fitness"+str(self.myID)+".txt"):
+    #         time.sleep(0.01)
+    #     fitnessFile = open("fitness"+str(self.myID)+".txt", "r")
+    #     self.fitness = float(fitnessFile.readline())
+    #     print( self.fitness, "lollllol")
+    #     fitnessFile.close()
 
     def Start_Simulation(self, DIR_GUI):
         self.Create_World() 

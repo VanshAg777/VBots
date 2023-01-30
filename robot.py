@@ -56,10 +56,11 @@ class ROBOT:
         # print(xCoordinateOfLinkZero, "tuplefs")
 
         f = open("tmp"+ str(solutionID)+ ".txt", "w")
-        os.system("mv tmp"+ str(solutionID)+ ".txt fitness" + str(solutionID) + ".txt")
 
         f.write(str(xCoordinateOfLinkZero))
         f.close()
+        os.system("mv tmp"+ str(solutionID)+ ".txt fitness" + str(solutionID) + ".txt")
+
         exit()
 
 

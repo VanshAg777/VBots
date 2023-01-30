@@ -16,22 +16,21 @@ class PARALLEL_HILL_CLIMBER:
             self.nextAvailableID = self.nextAvailableID + 1
         
     def Evolve(self):
-        for i in self.parents:
-            self.parents[i].Start_Simulation("DIRECT")
-        for j in self.parents:
-            self.parents[j].Wait_For_Simulation_To_End()
+        self.Evaluate(self.parents)
         for currentGeneration in range(0,c.numberOfGenerations):
             self.Evolve_For_One_Generation()
         
-            
     
     def Evolve_For_One_Generation(self):
         pass
         self.Spawn()
-        # self.Mutate()
+        self.Mutate()
+        self.Evaluate(self.children)
         # self.child.Evaluate("DIRECT")
-        # self.Print()
-        # self.Select()
+        print()
+        self.Print()
+        print()
+        self.Select()
 
     def Spawn(self):
         self.children = {}
@@ -50,12 +49,28 @@ class PARALLEL_HILL_CLIMBER:
         # self.child.Mutate()
 
     def Select(self):
-        if(self.parent.fitness > self.child.fitness):
-            self.parent = self.child
+         for n in self.parents:
+            if(self.parents[n].fitness > self.children[n].fitness):
+                self.parents[n] = self.children[n]
 
     def Print(self):
-        print("Parent's fitness : ", self.parent.fitness,"  | Child's fitness : ", self.child.fitness)
+        for m in self.parents:
+            print("Parent's fitness : ", self.parents[m].fitness,"  | Child's fitness : ", self.children[m].fitness)
 
     def Show_Best(self):
-        self.parent.Evaluate("GUI")
+        best = float('inf')
+        alpha = None
+        for o in self.parents:
+            if best > self.parents[o].fitness:
+                best = self.parents[o].fitness
+                alpha = o
+        self.parents[alpha].Start_Simulation("GUI")
+        # self.parent.Evaluate("GUI")
+
+    def Evaluate(self, solutions):
+        for i in solutions:
+           solutions[i].Start_Simulation("DIRECT")
+        for j in solutions:
+            solutions[j].Wait_For_Simulation_To_End()
+        pass
         
