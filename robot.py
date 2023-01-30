@@ -49,12 +49,15 @@ class ROBOT:
         self.nn.Update()
         # self.nn.Print()
 
-    def Get_Fitness(self):
+    def Get_Fitness(self, solutionID):
         stateOfLinkZero = p.getLinkState(self.robotId,0)
         positionOfLinkZero = stateOfLinkZero[0]
         xCoordinateOfLinkZero = positionOfLinkZero[0]
         # print(xCoordinateOfLinkZero, "tuplefs")
-        f = open("fitness.txt", "w")
+
+        f = open("tmp"+ str(solutionID)+ ".txt", "w")
+        os.system("mv tmp"+ str(solutionID)+ ".txt fitness" + str(solutionID) + ".txt")
+
         f.write(str(xCoordinateOfLinkZero))
         f.close()
         exit()

@@ -2,6 +2,8 @@ import os
 import pyrosim.pyrosim as pyrosim
 import numpy
 import random
+import time
+
 
 class SOLUTION:
     def __init__(self, nextAvailableID):
@@ -16,12 +18,30 @@ class SOLUTION:
         self.Create_Body()
         self.Create_Brain()
         os.system("python3 simulate.py " + str(DIR_GUI) + " " + str(self.myID) + " &")
-        fitnessFile = open("fitness.txt", "r")
+        while not os.path.exists("fitness"+str(self.myID)+".txt"):
+            time.sleep(0.01)
+        fitnessFile = open("fitness"+str(self.myID)+".txt", "r")
+        self.fitness = float(fitnessFile.readline())
+        print( self.fitness, "lollllol")
+        fitnessFile.close()
+
+    def Start_Simulation(self, DIR_GUI):
+        self.Create_World() 
+        self.Create_Body()
+        self.Create_Brain()
+        os.system("python3 simulate.py " + str(DIR_GUI) + " " + str(self.myID) + " &")
+        
+
+    def Wait_For_Simulation_To_End(self):
+        while not os.path.exists("fitness"+str(self.myID)+".txt"):
+            time.sleep(0.01)
+        fitnessFile = open("fitness"+str(self.myID)+".txt", "r")
         self.fitness = float(fitnessFile.readline())
         fitnessFile.close()
+        # print( self.myID, self.fitness)
+        os.system("rm fitness"+str(self.myID)+".txt")
+        
        
-
-
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf")
         length = 1
@@ -79,7 +99,8 @@ class SOLUTION:
         randomColumn = random.randint(0,1)
         self.weights[randomRow,randomColumn] =  random.random() * 2 - 1
 
-    def Set_ID(self):
+    def Set_ID(self, nextAvailableID):
+        self.myID = nextAvailableID
         pass
 
 
