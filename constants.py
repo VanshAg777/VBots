@@ -11,13 +11,13 @@ phaseOffsetBackLeg = 0
 
 # phaseOffsetBackLeg = numpy.pi/7
 
-maxForceBackLeg = 23
+maxForceBackLeg = 70
 
 amplitudeFrontLeg = numpy.pi/3
 frequencyFrontLeg = 10
 phaseOffsetFrontLeg = 0
 
-maxForceFrontLeg = 23
+maxForceFrontLeg = 70
 
 numberOfGenerations = 10
 
@@ -26,7 +26,7 @@ populationSize = 10
 numSensorNeurons = 4
 numMotorNeurons = 8
 
-motorJointRange = 0.8
+motorJointRange = 0.5
 
 # targetPosition = -(numpy.pi)/4,
 # targetPosition = random.uniform(-(numpy.pi)/2,(numpy.pi)/2),

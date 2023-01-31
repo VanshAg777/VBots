@@ -30,7 +30,7 @@ class SIMULATION:
             self.robot.Think()
             self.robot.Act(t)
             if self.directOrGUI == "GUI":
-                time.sleep( 1/1820 )
+                time.sleep( 1/6400 )
             # print(t) 
     
     def __del__(self):
