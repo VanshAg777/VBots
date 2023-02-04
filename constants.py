@@ -11,13 +11,13 @@ phaseOffsetBackLeg = 0
 
 # phaseOffsetBackLeg = numpy.pi/7
 
-maxForceBackLeg = 70
+maxForceBackLeg = 50
 
 amplitudeFrontLeg = numpy.pi/3
 frequencyFrontLeg = 10
 phaseOffsetFrontLeg = 0
 
-maxForceFrontLeg = 70
+maxForceFrontLeg = 50
 
 numberOfGenerations = 10
 
