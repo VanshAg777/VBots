@@ -1,6 +1,6 @@
 import pybullet as p
 import pybullet_data
-import pyrosim.pyrosim as pyrosim
+import pyrosim_old.pyrosim as pyrosim
 
 class WORLD:
     def __init__(self, physicsClient):

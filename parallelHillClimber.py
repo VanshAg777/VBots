@@ -64,7 +64,7 @@ class PARALLEL_HILL_CLIMBER:
             if best > self.parents[o].fitness:
                 best = self.parents[o].fitness
                 alpha = o
-        self.parents[alpha].Start_Simulation("GUI")
+        self.parents[alpha].Start_Simulation("GUI", 1)
         # self.parent.Evaluate("GUI")
 
     def Evaluate(self, solutions):

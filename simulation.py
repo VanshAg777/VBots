@@ -3,7 +3,7 @@ from robot import ROBOT
 import pybullet as p
 import time
 import pybullet_data
-import pyrosim.pyrosim as pyrosim
+import pyrosim_old.pyrosim as pyrosim
 import constants as c
 
 
@@ -23,12 +23,12 @@ class SIMULATION:
         self.robot = ROBOT(solutionID)
           
 
-    def Run(self):
+    def Run(self,x = 0):
         for t in range(0,c.simLength):
             p.stepSimulation()
             self.robot.Sense(t)
             self.robot.Think()
-            self.robot.Act(t)
+            self.robot.Act(t,x)
             if self.directOrGUI == "GUI":
                 time.sleep( 1/6400 )
             # print(t) 
