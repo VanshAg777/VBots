@@ -5,6 +5,7 @@ import pybullet as p
 import pyrosim.pyrosim as pyrosim
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import constants as c
+import math
 
 class ROBOT:
     def __init__(self, solutionID):
@@ -50,19 +51,30 @@ class ROBOT:
         self.nn.Update()
         # self.nn.Print()
 
-    def Get_Fitness(self, solutionID):
+    def Get_Fitness(self, solutionID, obj):
         # stateOfLinkZero = p.getLinkState(self.robotId,0)
         # positionOfLinkZero = stateOfLinkZero[0]
         # xCoordinateOfLinkZero = positionOfLinkZero[0]
-
+        objectPosition = obj
         basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
+        # print(basePositionAndOrientation)
         basePosition = basePositionAndOrientation[0]
         xPosition = basePosition[0]
+        yPosition = basePosition[1]
+        zPosition = basePosition[2]
         # print(xCoordinateOfLinkZero, "tuplefs")
+
+        position = obj[0]
+        objxPosition = position[0]
+        objyPosition = position[1]
+        objheight = position[2]
+
+        EuclideanDist = math.dist([objxPosition,objyPosition],[xPosition, yPosition])
+        # print(EuclideanDist, "lol")
 
         f = open("tmp"+ str(solutionID)+ ".txt", "w")
 
-        f.write(str(xPosition))
+        f.write(str(EuclideanDist))
         f.close()
         os.system("mv tmp"+ str(solutionID)+ ".txt fitness" + str(solutionID) + ".txt")
 

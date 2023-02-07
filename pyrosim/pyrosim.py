@@ -14,6 +14,8 @@ from pyrosim.urdf  import URDF
 
 from pyrosim.joint import JOINT
 
+import numpy
+
 SDF_FILETYPE  = 0
 
 URDF_FILETYPE = 1
@@ -44,7 +46,8 @@ def End_Model():
 
 def Get_Touch_Sensor_Value_For_Link(linkName):
 
-    touchValue = -1.0
+    touchValue = numpy.random.randint(-1,1)
+    # touchValue = -1
 
     desiredLinkIndex = linkNamesToIndices[linkName]
 
@@ -56,7 +59,8 @@ def Get_Touch_Sensor_Value_For_Link(linkName):
 
         if ( linkIndex == desiredLinkIndex ):
 
-            touchValue = 1.0
+            touchValue = numpy.random.randint(-1,1)
+            # touchValue = 1
 
     return touchValue
 
@@ -106,7 +110,7 @@ def Prepare_To_Simulate(bodyID):
 
     Prepare_Joint_Dictionary(bodyID)
 
-def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1]):
+def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1], mass = 1.0):
 
     global availableLinkIndex
 
@@ -116,7 +120,7 @@ def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1]):
 
         Start_Model(name,pos)
 
-        link = LINK_SDF(name,pos,size)
+        link = LINK_SDF(name,pos,size, mass)
 
         links.append(link)
     else:

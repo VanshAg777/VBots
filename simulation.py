@@ -37,5 +37,6 @@ class SIMULATION:
         p.disconnect()
 
     def Get_Fitness(self, solutionID):
-        self.robot.Get_Fitness(solutionID)
+        obj = self.world.Get_Position(0)
+        self.robot.Get_Fitness(solutionID, obj)
         

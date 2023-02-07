@@ -3,7 +3,7 @@ import random
 
 gravity = -9.8
 
-simLength = 1000
+simLength = 10000
 
 amplitudeBackLeg = numpy.pi/4
 frequencyBackLeg = 10
@@ -23,8 +23,8 @@ numberOfGenerations = 10
 
 populationSize = 10
 
-numSensorNeurons = 4
-numMotorNeurons = 8
+numSensorNeurons = 6
+numMotorNeurons = 12
 
 motorJointRange = 0.5
 
