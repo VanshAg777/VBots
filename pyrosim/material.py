@@ -9,6 +9,7 @@ class MATERIAL:
         self.string1 = '<material name="Cyan">'
 
         self.string2 = '    <color rgba="0 0 1 1"/>'
+        # self.string2 = '    <color rgba=' + str(color[0]) + " " + str(color[1]) + " " + str(color[2]) + " " + str(color[3]) +'/>'
 
         self.string3 = '</material>'
 

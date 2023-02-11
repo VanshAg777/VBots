@@ -17,14 +17,21 @@ amplitudeFrontLeg = numpy.pi/3
 frequencyFrontLeg = 10
 phaseOffsetFrontLeg = 0
 
-maxForceFrontLeg = 70
+maxForceFrontLeg = 30
 
 numberOfGenerations = 10
 
 populationSize = 10
 
-numSensorNeurons = 6
-numMotorNeurons = 12
+numLinks = random.randint(3,9)
+
+randSensorsList = []
+for i in range(0,numLinks):
+    randSensorsList.append(random.randint(0,1))
+
+numSensorNeurons = randSensorsList.count(1)
+
+numMotorNeurons = numLinks
 
 motorJointRange = 0.5
 
