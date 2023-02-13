@@ -17,11 +17,11 @@ amplitudeFrontLeg = numpy.pi/3
 frequencyFrontLeg = 10
 phaseOffsetFrontLeg = 0
 
-maxForceFrontLeg = 30
+maxForceFrontLeg = 70
 
-numberOfGenerations = 1
+numberOfGenerations = 10
 
-populationSize = 1
+populationSize = 10
 
 numLinks = random.randint(3,9)
 
