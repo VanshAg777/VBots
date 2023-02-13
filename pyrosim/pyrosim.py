@@ -46,8 +46,8 @@ def End_Model():
 
 def Get_Touch_Sensor_Value_For_Link(linkName):
 
-    # touchValue = numpy.random.randint(-1,1)
-    touchValue = -1
+    touchValue = numpy.random.randint(-1,1)
+    # touchValue = -1
 
     desiredLinkIndex = linkNamesToIndices[linkName]
 
@@ -59,8 +59,8 @@ def Get_Touch_Sensor_Value_For_Link(linkName):
 
         if ( linkIndex == desiredLinkIndex ):
 
-            # touchValue = numpy.random.randint(-1,1)
-            touchValue = 1
+            touchValue = numpy.random.randint(-1,1)
+            # touchValue = 1
 
     return touchValue
 
@@ -110,7 +110,7 @@ def Prepare_To_Simulate(bodyID):
 
     Prepare_Joint_Dictionary(bodyID)
 
-def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1], mass = 1.0, color  = [0, 0, 1, 1]):
+def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1], mass = 1.0, tag = "Cyan", color  = [0, 0, 1, 1]):
 
     global availableLinkIndex
 
@@ -124,7 +124,7 @@ def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1], mass = 1.0, color  = [0, 
 
         links.append(link)
     else:
-        link = LINK_URDF(name,pos,size, color)
+        link = LINK_URDF(name,pos,size, tag, color)
 
         links.append(link)
 

@@ -60,10 +60,13 @@ class SOLUTION:
         pyrosim.Start_URDF("body.urdf")
         
         height = random.randint(1,3) * numpy.random.rand()
-        color = 0
+
+        tag = "Cyan"
+
         r = 0
-        g = 1
+        g = 0
         b = 1
+        a = 1
 
         linkLenInfo = {}
 
@@ -72,24 +75,27 @@ class SOLUTION:
             width = random.randint(1,3) * numpy.random.rand()
             if (c.randSensorsList[i] == 1):
                 b = 0
+                g = 1
+                tag = "Green"
 
             if (i == 0):
-                pyrosim.Send_Cube(name = "Link" + str(i), pos=[0,0,0] , size=[length,width,height], mass = 1)
+                pyrosim.Send_Cube(name = "Link" + str(i), pos=[0,0,1.5] , size=[length,width,3], mass = 1, tag = tag, color = [r, g, b ,a ] )
             else:
-                pyrosim.Send_Cube(name = "Link" +str(i), pos=[length/2,0,0] , size=[length,width,height], mass = 1)
+                pyrosim.Send_Cube(name = "Link" +str(i), pos=[linkLenInfo["Link" + str(i-1)][0],0,0] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
 
-            linkLenInfo["Link" + str(i)] = length
+            linkLenInfo["Link" + str(i)] = [length, width, height]
+            b = 1
+            g = 0
+            tag = "Cyan"
+
             
         for j in range(1,c.numLinks):
             if (j == 1):
-                pyrosim.Send_Joint(name = "Link" + str(j-1) + "_" + "Link" + str(j) , parent = "Link" + str(j-1) , child = "Link" + str(j) , type = "revolute", position = [linkLenInfo["Link" + str(j-1)]/2,0,0], jointAxis = "0 0 1")
+                pyrosim.Send_Joint(name = "Link" + str(j-1) + "_" + "Link" + str(j) , parent = "Link" + str(j-1) , child = "Link" + str(j) , type = "revolute", position = [linkLenInfo["Link" + str(j-1)][0]/2,0,3], jointAxis = "0 0 1")
             else:
-                pyrosim.Send_Joint(name = "Link" + str(j-1) + "_" + "Link" + str(j) , parent = "Link" + str(j-1) , child = "Link" + str(j) , type = "revolute", position = [linkLenInfo["Link" + str(j-1)],0,0], jointAxis = "0 0 1")
-
-
+                pyrosim.Send_Joint(name = "Link" + str(j-1) + "_" + "Link" + str(j) , parent = "Link" + str(j-1) , child = "Link" + str(j) , type = "revolute", position = [linkLenInfo["Link" + str(j-1)][0]/2,0,0], jointAxis = "0 0 1")
 
         pyrosim.End()
-
 
     def Create_Brain(self):
 
