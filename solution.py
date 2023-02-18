@@ -4,6 +4,7 @@ import numpy
 import random
 import time
 import constants as c
+import math
 
 
 
@@ -58,8 +59,6 @@ class SOLUTION:
 
     def Create_Body(self):
         pyrosim.Start_URDF("body.urdf")
-        
-        height = random.randint(1,3) * numpy.random.rand()
 
         tag = "Cyan"
 
@@ -69,31 +68,155 @@ class SOLUTION:
         a = 1
 
         linkLenInfo = {}
+        linksAdded = []
+        connections = []
+        self.LinkJointLink = []
+        locationMatrix = numpy.zeros((40,40,40,3))
+
+        minX = 0
+        minY = 0
+        minZ = 0
+
+        maxX = 0
+        maxY = 0
+        maxZ = 0
+
 
         for i in range(0,c.numLinks):
-            length = random.randint(1,2) * numpy.random.rand()
-            width = random.randint(1,2) * numpy.random.rand()
+            # length = random.randint(1,2) * numpy.random.rand()
+            # width = random.randint(1,2) * numpy.random.rand()
+            # height = random.randint(1,2) * numpy.random.rand()
+
+            length = random.randint(1,2) 
+            width = random.randint(1,2) 
+            height = random.randint(1,2) 
+
             if (c.randSensorsList[i] == 1):
                 b = 0
                 g = 1
                 tag = "Green"
 
+           
             if (i == 0):
-                pyrosim.Send_Cube(name = "Link" + str(i), pos=[0,0,1] , size=[length,width,2], mass = 1, tag = tag, color = [r, g, b ,a ] )
+                pyrosim.Send_Cube(name = "Link" + str(i), pos=[0.5,0.5,1] , size=[length,width,2], mass = 1, tag = tag, color = [r, g, b ,a ] )
+                minX = 0
+                minY = 0
+                minZ = 0
+                for x in range(length):
+                    for y in range(width):
+                        for z in range(height):
+                            locationMatrix[20+x,20+y,0+z] = 1
+                            maxX = 20+x
+                            maxY = 20+y
+                            maxZ = 0+z
             else:
                 pyrosim.Send_Cube(name = "Link" +str(i), pos=[length/2,0,0] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
 
-            linkLenInfo["Link" + str(i)] = [length, width, height]
+            
             b = 1
             g = 0
             tag = "Cyan"
+            flag2 = 1
 
-            
-        for j in range(1,c.numLinks):
-            if (j == 1):
-                pyrosim.Send_Joint(name = "Link" + str(j-1) + "_" + "Link" + str(j) , parent = "Link" + str(j-1) , child = "Link" + str(j) , type = "revolute", position = [linkLenInfo["Link" + str(j-1)][0]/2,0,1], jointAxis = "0 0 1")
+            if(i == 0):
+                linkLenInfo["Link" + str(i)] = [length, width, height,[minX,maxX],[minY,maxY],[minZ,maxZ]]
+                linksAdded.append("Link" + str(i))
+                print(locationMatrix[20,20,1], "jjk")
             else:
-                pyrosim.Send_Joint(name = "Link" + str(j-1) + "_" + "Link" + str(j) , parent = "Link" + str(j-1) , child = "Link" + str(j) , type = "revolute", position = [linkLenInfo["Link" + str(j-1)][0],0,0], jointAxis = "0 0 1")
+                while(flag2 == 1):
+                    # jointPositionAxis = random.choice([0, 1, 2])
+                    jointPositionAxis = 0
+                    linkToJoin = random.choice(linksAdded)
+
+                    if ([jointPositionAxis,linkToJoin] in connections):
+                        pass
+                    else:
+                        linkToJoinPointX = linkLenInfo[linkToJoin][3]
+                        linkToJoinPointY = linkLenInfo[linkToJoin][4]
+                        linkToJoinPointZ = linkLenInfo[linkToJoin][5]
+
+                        MidPointX = (linkToJoinPointX[0]+linkToJoinPointX[1])/2
+                        MidPointY = (linkToJoinPointY[0]+linkToJoinPointY[1])/2
+                        MidPointZ = (linkToJoinPointZ[0]+linkToJoinPointZ[1])/2
+                        if jointPositionAxis == 0:
+                            for x2 in range(length):
+                                for y2 in range(width):
+                                    for z2 in range(height):
+                                        print(locationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)],"hui")
+
+                                      
+                                        if locationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] == [1,1,1]:
+                                            flag2 = 1
+                                            break
+                                        else:
+                                            flag2 = 0
+                                            minX = linkToJoinPointX[1]
+                                            maxX = minX + length
+                                            minY = MidPointY - width/2
+                                            maxY = minY + width
+                                            minZ = MidPointZ - height/2
+                                            maxZ = minZ + height
+                                      
+                        elif jointPositionAxis == 1:
+                            for x2 in range(length):
+                                for y2 in range(width):
+                                    for z2 in range(height):
+                                        
+                                        if locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(y2 + linkToJoinPointY[1]), math.ceil(MidPointZ - height/2 + z2)] == [1,1,1]:
+                                            flag2 = 1
+                                            break
+                                        else:
+                                            flag2 = 0
+                                            minX = MidPointX - length/2
+                                            maxX = minX + length
+                                            minY = linkToJoinPointY[1]
+                                            maxY = minY + width
+                                            minZ = MidPointZ - height/2
+                                            maxZ = minZ + height
+                        else:
+                            for x2 in range(length):
+                                for y2 in range(width):
+                                    for z2 in range(height):
+                                        
+                                        if locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.ceil(z2 + linkToJoinPointZ[1])] == [1,1,1]:
+                                            flag2 = 1
+                                            break
+                                        else:
+                                            flag2 = 0
+                                            minX = MidPointX - length/2
+                                            maxX = minX + length
+                                            minY = MidPointY - width/2
+                                            maxY = minY + width
+                                            minZ = linkToJoinPointZ[1]
+                                            maxZ = minZ + height
+
+                                            
+                linkLenInfo["Link" + str(i)] = [length, width, height,[minX,maxX],[minY,maxY],[minZ,maxZ]]
+                linksAdded.append("Link" + str(i))
+                connections.append([jointPositionAxis,linkToJoin])  
+                print(connections)
+                
+                
+                if (linkToJoin == "Link0"):
+                    if (jointPositionAxis == 0):
+                        pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2 + 0.5,0.5,1], jointAxis = "0 0 1")
+                    elif (jointPositionAxis == 1):
+                        pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [0.5,linkLenInfo[linkToJoin][1]/2 + 0.5,1], jointAxis = "0 0 1")
+                    else:
+                        pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [0.5,0.5,1 + linkLenInfo[linkToJoin][2]/2], jointAxis = "0 0 1")
+                    
+                else:
+                    if (jointPositionAxis == 0):
+                        pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [linkLenInfo[linkToJoin][0],0,0], jointAxis = "0 0 1")
+                    elif (jointPositionAxis == 1):
+                        pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [0,linkLenInfo[linkToJoin][1],0], jointAxis = "0 0 1")
+                    else:
+                        pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin  , child = "Link" + str(i) , type = "revolute", position = [0,0,linkLenInfo[linkToJoin][2]], jointAxis = "0 0 1")
+                
+                self.LinkJointLink.append(linkToJoin + "_" + "Link" + str(i))
+
+                
+
 
         pyrosim.End()
 
@@ -108,11 +231,11 @@ class SOLUTION:
                 counter += 1
 
         for j in range(1,c.numLinks):
-            pyrosim.Send_Motor_Neuron( name = j + c.numSensorNeurons - 1 , jointName = "Link" + str(j-1) + "_" + "Link" + str(j))
+            pyrosim.Send_Motor_Neuron( name = j + c.numSensorNeurons - 1 , jointName = self.LinkJointLink[j-1])
 
         for currentRow in range(0,c.numSensorNeurons):
             for currentColumn in range(0,c.numMotorNeurons):
-                    pyrosim.Send_Synapse( sourceNeuronName = currentRow , targetNeuronName = currentColumn + 5 , weight = self.weights[currentRow][currentColumn])
+                    pyrosim.Send_Synapse( sourceNeuronName = currentRow , targetNeuronName = currentColumn + c.numSensorNeurons - 1 , weight = self.weights[currentRow][currentColumn])
 
         pyrosim.End()
 

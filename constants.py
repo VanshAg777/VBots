@@ -19,9 +19,9 @@ phaseOffsetFrontLeg = 0
 
 maxForceFrontLeg = 70
 
-numberOfGenerations = 10
+numberOfGenerations = 1
 
-populationSize = 10
+populationSize = 1
 
 numLinks = random.randint(3,9)
 
