@@ -124,8 +124,8 @@ class SOLUTION:
                 print(locationMatrix[20,20,1], "jjk")
             else:
                 while(flag2 == 1):
-                    # jointPositionAxis = random.choice([0, 1, 2])
-                    jointPositionAxis = 0
+                    jointPositionAxis = random.choice([0, 1, 2])
+                    # jointPositionAxis = 0
                     linkToJoin = random.choice(linksAdded)
 
                     if ([jointPositionAxis,linkToJoin] in connections):
@@ -138,6 +138,9 @@ class SOLUTION:
                         MidPointX = (linkToJoinPointX[0]+linkToJoinPointX[1])/2
                         MidPointY = (linkToJoinPointY[0]+linkToJoinPointY[1])/2
                         MidPointZ = (linkToJoinPointZ[0]+linkToJoinPointZ[1])/2
+
+                        tempLocationMatrix = locationMatrix.copy()
+                        positionTaken = numpy.array([1,1,1])
                         if jointPositionAxis == 0:
                             for x2 in range(length):
                                 for y2 in range(width):
@@ -145,8 +148,11 @@ class SOLUTION:
                                         print(locationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)],"hui")
 
                                       
-                                        if locationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] == [1,1,1]:
+                                        if (locationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] == positionTaken).all():
                                             flag2 = 1
+                                            tempLocationMatrix = locationMatrix.copy()
+                                            print("shit")
+
                                             break
                                         else:
                                             flag2 = 0
@@ -156,14 +162,20 @@ class SOLUTION:
                                             maxY = minY + width
                                             minZ = MidPointZ - height/2
                                             maxZ = minZ + height
+                                            tempLocationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] = 1
+                                            print(tempLocationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)],"huraay")
+
                                       
                         elif jointPositionAxis == 1:
                             for x2 in range(length):
                                 for y2 in range(width):
                                     for z2 in range(height):
                                         
-                                        if locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(y2 + linkToJoinPointY[1]), math.ceil(MidPointZ - height/2 + z2)] == [1,1,1]:
+                                        if (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(y2 + linkToJoinPointY[1]), math.ceil(MidPointZ - height/2 + z2)] == positionTaken).all():
                                             flag2 = 1
+                                            tempLocationMatrix = locationMatrix.copy()
+                                            print("shit")
+
                                             break
                                         else:
                                             flag2 = 0
@@ -173,13 +185,18 @@ class SOLUTION:
                                             maxY = minY + width
                                             minZ = MidPointZ - height/2
                                             maxZ = minZ + height
+                                            tempLocationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] = 1
+                                            print(tempLocationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)],"huraay")
+
                         else:
                             for x2 in range(length):
                                 for y2 in range(width):
                                     for z2 in range(height):
                                         
-                                        if locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.ceil(z2 + linkToJoinPointZ[1])] == [1,1,1]:
+                                        if (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.ceil(z2 + linkToJoinPointZ[1])] == positionTaken).all():
                                             flag2 = 1
+                                            tempLocationMatrix = locationMatrix.copy()
+                                            print("shit")
                                             break
                                         else:
                                             flag2 = 0
@@ -189,6 +206,10 @@ class SOLUTION:
                                             maxY = minY + width
                                             minZ = linkToJoinPointZ[1]
                                             maxZ = minZ + height
+                                            tempLocationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] = 1
+                                            print(tempLocationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)],"huraay")
+                
+                locationMatrix = tempLocationMatrix.copy()
 
                                             
                 linkLenInfo["Link" + str(i)] = [length, width, height,[minX,maxX],[minY,maxY],[minZ,maxZ]]
