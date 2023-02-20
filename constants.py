@@ -23,7 +23,7 @@ numberOfGenerations = 1
 
 populationSize = 1
 
-numLinks = random.randint(3,9)
+numLinks = random.randint(3,4)
 
 randSensorsList = []
 for i in range(0,numLinks):
@@ -33,7 +33,7 @@ numSensorNeurons = randSensorsList.count(1)
 
 numMotorNeurons = numLinks
 
-motorJointRange = 0.5
+motorJointRange = 0.2
 
 # targetPosition = -(numpy.pi)/4,
 # targetPosition = random.uniform(-(numpy.pi)/2,(numpy.pi)/2),
