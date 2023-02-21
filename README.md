@@ -1,7 +1,11 @@
 # VBots
 
-The goal of the **Snake (Random 1D Creature Morphologies)** is to reach the block.
-Snake moves toward the block. **Euclidean distance** between the block and the snake is used as fitness. Lower the distance, better the fitness.
+The goal of the **3D Creature (Random 3D Creature Morphologies)** is to reach the block.
+3D Creature moves toward the block. **Euclidean distance** between the block and the snake is used as fitness. Lower the distance, better the fitness.
+
+**locationMatrix is used to create a virtual 3D space which fils up area as cubes are sent. This helps in preventing the cubes in overlapping each other.
+
+Links and jointPositionAxis(x, y, z) place are randomly selected for the new link to join. If the selected combination results in overlapping, a new combination is generated.
 
 ## How to Run:
 Run **search.py** to simulate the results.
