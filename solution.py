@@ -70,6 +70,7 @@ class SOLUTION:
         linkLenInfo = {}
         linksAdded = []
         connections = []
+        grandConnections = {}
         self.LinkJointLink = []
         locationMatrix = numpy.zeros((40,40,40,3))
 
@@ -87,8 +88,8 @@ class SOLUTION:
             # width = random.randint(1,2) * numpy.random.rand()
             # height = random.randint(1,2) * numpy.random.rand()
 
-            length = random.randint(1,2) 
-            width = random.randint(1,2) 
+            length = random.randint(1,4) 
+            width = random.randint(1,4) 
             height = random.randint(1,2) 
 
             if (c.randSensorsList[i] == 1):
@@ -98,7 +99,7 @@ class SOLUTION:
 
            
             if (i == 0):
-                pyrosim.Send_Cube(name = "Link" + str(i), pos=[length/2,width/2,1] , size=[length,width,2], mass = 1, tag = "rand", color = [1, 0, 0 ,0.4 ] )
+                pyrosim.Send_Cube(name = "Link" + str(i), pos=[length/2,width/2,height/2] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ] )
                 minX = 0
                 minY = 0
                 minZ = 0
@@ -111,24 +112,20 @@ class SOLUTION:
                             maxZ = 0+z
             else:
                 pass
-            
-            b = 1
-            g = 0
-            tag = "Cyan"
-            flag2 = 1
 
             if(i == 0):
                 linkLenInfo["Link" + str(i)] = [length, width, height,[minX,maxX],[minY,maxY],[minZ,maxZ]]
-                
-               
-
                 linksAdded.append("Link" + str(i))
+                b = 1
+                g = 0
+                tag = "Cyan"
+                flag2 = 1
                
             else:
                 while(flag2 == 1):
-                    # jointPositionAxis = random.choice([0, 1, 2])
+                    jointPositionAxis = random.choice([0, 1, 2])
                     # jointPositionAxis = random.choice([0, 1])
-                    jointPositionAxis = 2
+                    # jointPositionAxis = 0
                     linkToJoin = random.choice(linksAdded)
 
                     if ([jointPositionAxis,linkToJoin] in connections):
@@ -209,12 +206,21 @@ class SOLUTION:
 
                                             
                 linkLenInfo["Link" + str(i)] = [length, width, height,[minX,maxX],[minY,maxY],[minZ,maxZ]]
-                if (i==1):
-                    print(linkLenInfo["Link0"][2], "heightttt")
+                
 
                 linksAdded.append("Link" + str(i))
                 connections.append([jointPositionAxis,linkToJoin])  
-                print(connections)
+                grandConnections[linkToJoin+"_"+"Link"+ str(i)] = jointPositionAxis
+                # print(grandConnections)
+                
+                # LinkJointLinkRev = self.LinkJointLink.copy()
+                # LinkJointLinkRev = LinkJointLinkRev.reverse()
+                # print(LinkJointLinkRev, "reversed")
+                for li in reversed(range(len(self.LinkJointLink))) :
+                    if ("_"+linkToJoin) in self.LinkJointLink[li]:
+                        grandparentLink = self.LinkJointLink[li]
+                        grandParAxis = grandConnections[grandparentLink]
+                        break
                 
                 
                 if (linkToJoin == "Link0"):
@@ -225,7 +231,7 @@ class SOLUTION:
                     else:
                         pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, linkLenInfo[linkToJoin][1]/2, linkLenInfo[linkToJoin][2]], jointAxis = "0 0 1")
                     
-                else:
+                elif(grandParAxis == jointPositionAxis):
                     if (jointPositionAxis == 0):
                         pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [linkLenInfo[linkToJoin][0],0,0], jointAxis = "1 0 0")
                     elif (jointPositionAxis == 1):
@@ -233,15 +239,42 @@ class SOLUTION:
                     else:
                         pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin  , child = "Link" + str(i) , type = "revolute", position = [0,0,linkLenInfo[linkToJoin][2]], jointAxis = "0 0 1")
                 
+                else:
+                    if (grandParAxis == 0):
+                        if (jointPositionAxis == 1):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, linkLenInfo[linkToJoin][1]/2, 0], jointAxis = "0 1 0")
+                        else:
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin  , child = "Link" + str(i) , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, 0, linkLenInfo[linkToJoin][2]/2], jointAxis = "0 0 1")
+                    elif (grandParAxis == 1):
+                        if (jointPositionAxis == 0):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, linkLenInfo[linkToJoin][1]/2, 0], jointAxis = "1 0 0")
+                        else:
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin  , child = "Link" + str(i) , type = "revolute", position = [0, linkLenInfo[linkToJoin][1]/2, linkLenInfo[linkToJoin][2]/2], jointAxis = "0 0 1")
+                    else:
+                        if (jointPositionAxis == 0):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, 0,  linkLenInfo[linkToJoin][2]/2], jointAxis = "1 0 0")
+                        else:
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin  , child = "Link" + str(i) , type = "revolute", position = [0, linkLenInfo[linkToJoin][1]/2, linkLenInfo[linkToJoin][2]/2], jointAxis = "0 1 0")
+                        
+
+                
+
+
+
+
                 if (jointPositionAxis == 0):
                     pyrosim.Send_Cube(name = "Link" +str(i), pos=[length/2,0,0] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
                 elif (jointPositionAxis == 1):
                     pyrosim.Send_Cube(name = "Link" +str(i), pos=[0,width/2,0] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
                 else:
-                    pyrosim.Send_Cube(name = "Link" +str(i), pos=[0,0,height/2+1] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
+                    pyrosim.Send_Cube(name = "Link" +str(i), pos=[0,0,height/2] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
 
                 self.LinkJointLink.append(linkToJoin + "_" + "Link" + str(i))
-                print(self.LinkJointLink)
+                # print(self.LinkJointLink, "straight")
+                b = 1
+                g = 0
+                tag = "Cyan"
+                flag2 = 1
 
                 
 

@@ -23,7 +23,7 @@ numberOfGenerations = 1
 
 populationSize = 1
 
-numLinks = random.randint(3,4)
+numLinks = random.randint(3,9)
 
 randSensorsList = []
 for i in range(0,numLinks):
