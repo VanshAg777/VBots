@@ -3,7 +3,7 @@ import random
 
 gravity = -9.8
 
-simLength = 10000
+simLength = 100000
 
 amplitudeBackLeg = numpy.pi/4
 frequencyBackLeg = 10
@@ -23,7 +23,7 @@ numberOfGenerations = 1
 
 populationSize = 1
 
-numLinks = random.randint(3,9)
+numLinks = random.randint(3,15)
 
 randSensorsList = []
 for i in range(0,numLinks):
