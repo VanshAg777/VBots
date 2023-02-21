@@ -9,6 +9,7 @@ Links and jointPositionAxis(x, y, z) place are randomly selected for the new lin
 
 ## How to Run:
 Run **search.py** to simulate the results.
+<img width="878" alt="3dAILife" src="https://user-images.githubusercontent.com/114874910/220258239-2e1e63d0-18e3-41b8-a610-55a132432249.png">
 
 ## References:
 1. [Northwestern University - COMP_SCI 396: Artificial Life](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/396-2.html). 
