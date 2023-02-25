@@ -9,12 +9,13 @@ import math
 
 class ROBOT:
     def __init__(self, solutionID):
-        self.robotId = p.loadURDF("body.urdf")
+        self.robotId = p.loadURDF("body"+str(solutionID)+".urdf")
         pyrosim.Prepare_To_Simulate(self.robotId)  
         self.Prepare_To_Sense() 
         self.nn = NEURAL_NETWORK("brain"+str(solutionID)+".nndf")
         self.Prepare_To_Act()
         os.system("rm brain"+str(solutionID)+".nndf")
+        os.system("rm body"+str(solutionID)+".urdf")
         
     def Prepare_To_Sense(self):
         self.sensors = {}

@@ -58,7 +58,8 @@ class SOLUTION:
 
 
     def Create_Body(self):
-        pyrosim.Start_URDF("body.urdf")
+        pyrosim.Start_URDF("body"+str(self.myID)+".urdf")
+        # pyrosim.Start_URDF("body.urdf")
 
         tag = "Cyan"
 
@@ -275,7 +276,7 @@ class SOLUTION:
                 g = 0
                 tag = "Cyan"
                 flag2 = 1
-
+                print(self.LinkJointLink, "Okayy")
                 
 
 
@@ -291,8 +292,8 @@ class SOLUTION:
                 pyrosim.Send_Sensor_Neuron(name = counter , linkName = "Link" + str(i))
                 counter += 1
 
-        for j in range(1,c.numLinks):
-            pyrosim.Send_Motor_Neuron( name = j + c.numSensorNeurons - 1 , jointName = self.LinkJointLink[j-1])
+        for j in range(0,c.numLinks - 1):
+            pyrosim.Send_Motor_Neuron( name = j + c.numSensorNeurons  , jointName = self.LinkJointLink[j])
 
         for currentRow in range(0,c.numSensorNeurons):
             for currentColumn in range(0,c.numMotorNeurons):

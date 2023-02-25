@@ -19,11 +19,11 @@ phaseOffsetFrontLeg = 0
 
 maxForceFrontLeg = 70
 
-numberOfGenerations = 1
+numberOfGenerations = 10
 
-populationSize = 1
+populationSize = 10
 
-numLinks = random.randint(3,15)
+numLinks = random.randint(3,7)
 
 randSensorsList = []
 for i in range(0,numLinks):
@@ -34,6 +34,10 @@ numSensorNeurons = randSensorsList.count(1)
 numMotorNeurons = numLinks
 
 motorJointRange = 0.5
+
+counter = 0
+
+past = 0
 
 # targetPosition = -(numpy.pi)/4,
 # targetPosition = random.uniform(-(numpy.pi)/2,(numpy.pi)/2),
