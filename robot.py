@@ -6,6 +6,7 @@ import pyrosim.pyrosim as pyrosim
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import constants as c
 import math
+import numpy
 
 class ROBOT:
     def __init__(self, solutionID):
@@ -16,6 +17,7 @@ class ROBOT:
         self.Prepare_To_Act()
         os.system("rm brain"+str(solutionID)+".nndf")
         os.system("rm body"+str(solutionID)+".urdf")
+        self.fitnessArray = []
         
     def Prepare_To_Sense(self):
         self.sensors = {}
@@ -82,6 +84,9 @@ class ROBOT:
         f.write(str(EuclideanDist))
         f.close()
         os.system("mv tmp"+ str(solutionID)+ ".txt fitness" + str(solutionID) + ".txt")
+        # self.fitnessArray.append(EuclideanDist)
+        # fitnessnumpy = numpy.array(self.fitnessArray)
+        # numpy.save("./data/fitness"+str(solutionID)+".npy", fitnessnumpy)
 
         exit()
 

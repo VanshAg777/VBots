@@ -19,14 +19,14 @@ phaseOffsetFrontLeg = 0
 
 maxForceFrontLeg = 70
 
-numberOfGenerations = 10
+numberOfGenerations = 2
 
-populationSize = 10
+populationSize = 1
 
-numLinks = random.randint(3,7)
+numLinks = random.randint(3,10)
 
-randSensorsList = []
-for i in range(0,numLinks):
+randSensorsList = [1]
+for i in range(0,numLinks-1):
     randSensorsList.append(random.randint(0,1))
 
 numSensorNeurons = randSensorsList.count(1)
