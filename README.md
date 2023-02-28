@@ -7,6 +7,8 @@ The goal of the **3D Creature (Random 3D Creature Morphologies)** is to reach th
 
 Links and jointPositionAxis(x, y, z) place are randomly selected for the new link to join. If the selected combination results in overlapping, a new combination is generated.
 
+It is randomly selected if a new link is to be added or an existing link has to be removed or only weights have to be changed. If a link has to be removed, it is made sure that the link does not have an extending link.
+
 ## How to Run:
 Run **search.py** to simulate the results.
 <img width="878" alt="3dAILife" src="https://user-images.githubusercontent.com/114874910/220258239-2e1e63d0-18e3-41b8-a610-55a132432249.png">

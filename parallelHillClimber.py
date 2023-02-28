@@ -66,7 +66,7 @@ class PARALLEL_HILL_CLIMBER:
                 best = self.parents[o].fitness
                 alpha = o
         print("Besttttt:",self.parents[alpha].fitness)
-        self.parents[alpha].Start_Simulation("GUI")
+        self.parents[alpha].Start_Simulation("GUI",1)
         # self.parent.Evaluate("GUI")
 
     def Evaluate(self, solutions, child_true):
@@ -92,9 +92,11 @@ class PARALLEL_HILL_CLIMBER:
             best_fitness[i] = int(best_fitness[i] * -1)
             
         ypoints = best_fitness
-        plt.title("Fitness =  Negative Euclidean distance to the box")
-        plt.xlabel("Generations")
-        plt.ylabel("Fitness")
+        font1 = {'family':'serif','color':'blue','size':20}
+        font2 = {'family':'serif','color':'darkred','size':15}
+        plt.title("Fitness =  Negative Euclidean distance to the box/numpyseed = "+str(c.numpyseed)+"/randomseed = "+str(c.randomseed), fontdict = font1)
+        plt.xlabel("Generations", fontdict = font2)
+        plt.ylabel("Fitness", fontdict = font2)
         plt.plot(xpoints, ypoints, marker = 'o')
         plt.show()
 

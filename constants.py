@@ -3,12 +3,12 @@ import random
 
 gravity = -9.8
 
-numpyseed = 96
-randomseed = 15
+numpyseed = 54
+randomseed = 59876
 numpy.random.seed(numpyseed)
 random.seed(randomseed)
 
-simLength = 1000
+simLength = 20000
 
 amplitudeBackLeg = numpy.pi/4
 frequencyBackLeg = 10
