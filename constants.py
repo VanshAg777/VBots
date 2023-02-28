@@ -8,7 +8,7 @@ randomseed = 15
 numpy.random.seed(numpyseed)
 random.seed(randomseed)
 
-simLength = 10000
+simLength = 1000
 
 amplitudeBackLeg = numpy.pi/4
 frequencyBackLeg = 10

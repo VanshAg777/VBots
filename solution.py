@@ -84,31 +84,6 @@ class SOLUTION:
         linksAdded = self.linksAdded
         LinkJoitLink = grandConnections.keys()
 
-        # 0 - Remove Link/ 1 - Add Link/ 2 - None
-        if len(LinkJoitLink) > 3:
-            add_remove_none = random.choice([0, 1, 2])
-
-        # Remove Link
-        # if (add_remove_none == 0):
-        #     LinksWithChild = []
-        #     for li in linksAdded:
-        #         for j in LinkJoitLink:
-        #                 if (li + "_" ) in j:
-        #                     LinksWithChild.append(li)
-        #     childlessLinks = list((Counter(linksAdded)-Counter(LinksWithChild)).elements())
-        #     linkToRemove = random.choice(childlessLinks)
-        #     linksAdded.remove(linkToRemove)
-        #     linkLenInfo.remove(linkToRemove)
-        #     randSensorsList.pop()
-
-        #     for lj in LinkJoitLink:
-        #         if("_" + linkToRemove) in lj:
-        #             LinkJoitLinkToRemove = lj
-        #             break
-
-        #     LinkJoitLink.remove(LinkJoitLinkToRemove)
-        #     del grandConnections[LinkJoitLinkToRemove]
-
         counter = 0
 
         for link in linksAdded:
@@ -470,11 +445,12 @@ class SOLUTION:
         LinkJoitLink = grandConnections.keys()
         LinkJoiNtLink = list(LinkJoitLink)
         add_remove_none = 2
-        if len(LinkJoiNtLink) > 2:
-            # add_remove_none = random.choice([0, 1, 2])
-            add_remove_none = 0
+        if len(LinkJoiNtLink) > 3:
+            add_remove_none = random.choice([0, 1, 2])
+            # add_remove_none = 0
 
         # Remove Link
+        # 0 - Remove Link/ 1 - Add Link/ 2 - None
         if (add_remove_none == 0):
             LinksWithChild = []
             for li in linksAdded:

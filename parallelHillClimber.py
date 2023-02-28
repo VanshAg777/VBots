@@ -77,7 +77,7 @@ class PARALLEL_HILL_CLIMBER:
         pass
 
     def plot_fitness(self):
-        xpoints = [i for i in range(c.numberOfGenerations)]
+        xpoints = [i for i in range(c.numberOfGenerations + 1)]
         fitness_population = []
         counter = 0
         best_fitness = []
@@ -95,7 +95,7 @@ class PARALLEL_HILL_CLIMBER:
         plt.title("Fitness =  Negative Euclidean distance to the box")
         plt.xlabel("Generations")
         plt.ylabel("Fitness")
-        plt.plot(xpoints, ypoints[:c.numberOfGenerations], marker = 'o')
+        plt.plot(xpoints, ypoints, marker = 'o')
         plt.show()
 
         
