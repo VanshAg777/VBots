@@ -6,6 +6,8 @@ import time
 import constants as c
 import math
 from collections import Counter
+numpy.random.seed(c.numpyseed)
+random.seed(c.randomseed)
 
 
 
@@ -52,6 +54,7 @@ class SOLUTION:
         fitnessFile.close()
         # print( self.myID, self.fitness)
         os.system("rm fitness"+str(self.myID)+".txt")
+        return(self.fitness)
         
        
     def Create_World(self):
@@ -173,7 +176,7 @@ class SOLUTION:
                     pyrosim.Send_Cube(name = link, pos=[0,0,height/2] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
                 
         
-                print(LinkJoitLink, "childd Linkk")
+                # print(LinkJoitLink, "childd Linkk")
                 b = 1
                 g = 0
                 tag = "Cyan"
@@ -407,7 +410,7 @@ class SOLUTION:
                 g = 0
                 tag = "Cyan"
                 flag2 = 1
-                print(self.LinkJointLink, "Okayy")
+                # print(self.LinkJointLink, "Okayy")
                 
 
         self.linkLenInfo = linkLenInfo
@@ -491,7 +494,7 @@ class SOLUTION:
 
             # del LinkJoiNtLink[LinkJoitLinkToRemove]
             del grandConnections[LinkJoitLinkToRemove]
-            print(LinkJoitLinkToRemove,"removedd")
+            # print(LinkJoitLinkToRemove,"removedd")
 
         self.linkLenInfo = linkLenInfo
         self.grandConnections = grandConnections

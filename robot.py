@@ -72,8 +72,8 @@ class ROBOT:
         objyPosition = position[1]
         objheight = position[2]
 
-        print("x:", objxPosition)
-        print("y:", objyPosition)
+        # print("x:", objxPosition)
+        # print("y:", objyPosition)
 
 
         EuclideanDist = math.dist([objxPosition,objyPosition],[xPosition, yPosition])

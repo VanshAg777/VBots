@@ -2,6 +2,7 @@ import os
 from solution import SOLUTION
 import constants as c
 import copy
+import matplotlib.pyplot as plt
 
 
 class PARALLEL_HILL_CLIMBER:
@@ -11,6 +12,7 @@ class PARALLEL_HILL_CLIMBER:
         os.system("rm body*.urdf")
         self.nextAvailableID = 0
         self.parents = {}
+        self.fitness = []
         # self.parent = SOLUTION()
         for i in range(0, c.populationSize):
             self.parents[i] = SOLUTION(self.nextAvailableID)
@@ -71,6 +73,29 @@ class PARALLEL_HILL_CLIMBER:
         for i in solutions:
            solutions[i].Start_Simulation("DIRECT", child_true)
         for j in solutions:
-            solutions[j].Wait_For_Simulation_To_End()
+            self.fitness.append(solutions[j].Wait_For_Simulation_To_End())
         pass
+
+    def plot_fitness(self):
+        xpoints = [i for i in range(c.numberOfGenerations)]
+        fitness_population = []
+        counter = 0
+        best_fitness = []
+        for i in range(len(self.fitness)):
+            fitness_population.append(self.fitness[i])
+            counter +=1
+            if counter == c.populationSize:
+                best_fitness.append(min(fitness_population))
+                counter = 0
+                
+        for i in range(len(best_fitness)):
+            best_fitness[i] = int(best_fitness[i] * -1)
+            
+        ypoints = best_fitness
+        plt.title("Fitness =  Negative Euclidean distance to the box")
+        plt.xlabel("Generations")
+        plt.ylabel("Fitness")
+        plt.plot(xpoints, ypoints[:c.numberOfGenerations], marker = 'o')
+        plt.show()
+
         

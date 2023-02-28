@@ -3,7 +3,12 @@ import random
 
 gravity = -9.8
 
-simLength = 100000
+numpyseed = 96
+randomseed = 15
+numpy.random.seed(numpyseed)
+random.seed(randomseed)
+
+simLength = 10000
 
 amplitudeBackLeg = numpy.pi/4
 frequencyBackLeg = 10
@@ -19,11 +24,11 @@ phaseOffsetFrontLeg = 0
 
 maxForceFrontLeg = 70
 
-numberOfGenerations = 2
+numberOfGenerations = 50
 
-populationSize = 1
+populationSize = 10
 
-numLinks = random.randint(3,10)
+numLinks = random.randint(7,15)
 
 randSensorsList = [1]
 for i in range(0,numLinks-1):
