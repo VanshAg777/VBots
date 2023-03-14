@@ -20,12 +20,12 @@ class PARALLEL_HILL_CLIMBER:
             self.nextAvailableID = self.nextAvailableID + 1
         
     def Evolve(self):
-        self.Evaluate(self.parents, 0, currentGeneration)
+        self.Evaluate(self.parents, 0, 1)
         for currentGeneration in range(0,c.numberOfGenerations):
             self.Evolve_For_One_Generation(currentGeneration)
         
     
-    def Evolve_For_One_Generation(self, currentGeneration):
+    def Evolve_For_One_Generation(self, currentGeneration = 0):
         pass
         self.Spawn()
         self.Mutate()
@@ -73,10 +73,17 @@ class PARALLEL_HILL_CLIMBER:
             f.close()
         # self.parent.Evaluate("GUI")
 
-    def Evaluate(self, solutions, child_true, currentGeneration):
+    def Evaluate(self, solutions, child_true, currentGeneration = 0):
+        BestShown = 0
         for i in solutions:
             if(currentGeneration % 100 == 0):
-                solutions[i].Start_Simulation("GUI", child_true)
+                solutions[i].Start_Simulation("DIRECT", child_true)
+                print("currentGeneration", currentGeneration )
+                if BestShown == 0:
+                    ask = input("Record Video Reminder")
+                    self.Show_Best()
+                    BestShown = 1
+
             else:
                 solutions[i].Start_Simulation("DIRECT", child_true)
         for j in solutions:

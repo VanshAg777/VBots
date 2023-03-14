@@ -10,7 +10,7 @@ import numpy
 
 class ROBOT:
     def __init__(self, solutionID):
-        self.robotId = p.loadURDF("body"+str(solutionID)+".urdf",flags = p.URDF_USE_SELF_COLLISION)
+        self.robotId = p.loadURDF("body"+str(solutionID)+".urdf")
         # ,flags = p.URDF_USE_SELF_COLLISION
         pyrosim.Prepare_To_Simulate(self.robotId)  
         self.Prepare_To_Sense() 
@@ -92,5 +92,9 @@ class ROBOT:
         exit()
 
 
-   
+    def getLocation(self):
+        basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
+        return(basePositionAndOrientation)
+
+
       

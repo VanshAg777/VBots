@@ -3,12 +3,12 @@ import random
 
 gravity = -9.8
 
-numpyseed = 34
-randomseed = 3456
+numpyseed = 799
+randomseed = 7787
 numpy.random.seed(numpyseed)
 random.seed(randomseed)
 
-simLength = 20000
+simLength = 7000
 
 amplitudeBackLeg = numpy.pi/4
 frequencyBackLeg = 10
@@ -24,9 +24,9 @@ phaseOffsetFrontLeg = 0
 
 maxForceFrontLeg = 70
 
-numberOfGenerations = 10
+numberOfGenerations = 500
 
-populationSize = 5
+populationSize = 10
 
 numLinks = random.randint(2,8)
 

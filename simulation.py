@@ -30,9 +30,14 @@ class SIMULATION:
             p.stepSimulation()
             self.robot.Sense(t)
             self.robot.Think()
+            basePositionAndOrientation = self.robot.getLocation()
+            # basePositionAndOrientation = p.getBasePositionAndOrientation(self.robot.robotId)
+            # p.resetDebugVisualizerCamera( cameraDistance=0.3, cameraYaw=75, cameraPitch=-20, cameraTargetPosition=basePositionAndOrientation)
             self.robot.Act(t)
             if self.directOrGUI == "GUI":
                 time.sleep( 1/6400 )
+                p.resetDebugVisualizerCamera( cameraDistance=7, cameraYaw=75, cameraPitch=-20, cameraTargetPosition=basePositionAndOrientation[0])
+
             # print(t) 
     
     def __del__(self):
