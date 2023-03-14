@@ -10,7 +10,8 @@ import numpy
 
 class ROBOT:
     def __init__(self, solutionID):
-        self.robotId = p.loadURDF("body"+str(solutionID)+".urdf")
+        self.robotId = p.loadURDF("body"+str(solutionID)+".urdf",flags = p.URDF_USE_SELF_COLLISION)
+        # ,flags = p.URDF_USE_SELF_COLLISION
         pyrosim.Prepare_To_Simulate(self.robotId)  
         self.Prepare_To_Sense() 
         self.nn = NEURAL_NETWORK("brain"+str(solutionID)+".nndf")

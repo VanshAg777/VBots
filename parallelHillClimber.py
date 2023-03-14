@@ -3,6 +3,7 @@ from solution import SOLUTION
 import constants as c
 import copy
 import matplotlib.pyplot as plt
+import pickle
 
 
 class PARALLEL_HILL_CLIMBER:
@@ -65,8 +66,11 @@ class PARALLEL_HILL_CLIMBER:
             if best > self.parents[o].fitness:
                 best = self.parents[o].fitness
                 alpha = o
-        print("Besttttt:",self.parents[alpha].fitness)
+        print("Best:",self.parents[alpha].fitness)
         self.parents[alpha].Start_Simulation("GUI",1)
+        with open('data/fitnessValues{0}_{1}_best.pkl'.format(str(c.numpyseed), str(c.randomseed)), 'wb') as f:
+            pickle.dump(self.parents[alpha], f)
+            f.close()
         # self.parent.Evaluate("GUI")
 
     def Evaluate(self, solutions, child_true):
@@ -92,6 +96,9 @@ class PARALLEL_HILL_CLIMBER:
             best_fitness[i] = int(best_fitness[i] * -1)
             
         ypoints = best_fitness
+        with open('data/fitnessValues{0}_{1}.pkl'.format(str(c.numpyseed), str(c.randomseed)), 'wb') as f:
+            pickle.dump(ypoints, f)
+            f.close()
         font1 = {'family':'serif','color':'blue','size':20}
         font2 = {'family':'serif','color':'darkred','size':15}
         plt.title("Fitness =  Negative Euclidean distance to the box/numpyseed = "+str(c.numpyseed)+"/randomseed = "+str(c.randomseed), fontdict = font1)
@@ -99,5 +106,6 @@ class PARALLEL_HILL_CLIMBER:
         plt.ylabel("Fitness", fontdict = font2)
         plt.plot(xpoints, ypoints, marker = 'o')
         plt.show()
+        
 
         

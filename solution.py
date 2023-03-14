@@ -13,7 +13,8 @@ random.seed(c.randomseed)
 
 class SOLUTION:
     def __init__(self, nextAvailableID):
-        self.weights = numpy.random.rand(c.numSensorNeurons,c.numMotorNeurons) * 2 - 1
+        self.max_links = 9
+        self.weights = numpy.random.rand(self.max_links+2,self.max_links+2) * 2 - 1
         self.myID = nextAvailableID
         self.linkLenInfo = []
         self.grandConnections = {}
@@ -21,21 +22,10 @@ class SOLUTION:
         self.linksAdded = []
         self.locationMatrix = numpy.zeros((40,40,40))
         self.connections = []
-        # print(self.weights, "weightssss")
-        # exit()
+       
 
 
-    # def Evaluate(self, DIR_GUI):
-    #     self.Create_World() 
-    #     self.Create_Body()
-    #     self.Create_Brain()
-    #     os.system("python3 simulate.py " + str(DIR_GUI) + " " + str(self.myID) + " &")
-    #     while not os.path.exists("fitness"+str(self.myID)+".txt"):
-    #         time.sleep(0.01)
-    #     fitnessFile = open("fitness"+str(self.myID)+".txt", "r")
-    #     self.fitness = float(fitnessFile.readline())
-    #     print( self.fitness, "lollllol")
-    #     fitnessFile.close()
+    
 
     def Start_Simulation(self, DIR_GUI, child_true = 0):
         self.Create_World()
@@ -54,7 +44,6 @@ class SOLUTION:
         fitnessFile = open("fitness"+str(self.myID)+".txt", "r")
         self.fitness = float(fitnessFile.readline())
         fitnessFile.close()
-        # print( self.myID, self.fitness)
         os.system("rm fitness"+str(self.myID)+".txt")
         return(self.fitness)
         
@@ -81,6 +70,8 @@ class SOLUTION:
         a = 1
         linkLenInfo = self.linkLenInfo
         grandConnections =  self.grandConnections
+        print(grandConnections, "yaar")
+
         randSensorsList = self.randSensorsList
         linksAdded = self.linksAdded
         LinkJoitLink = grandConnections.keys()
@@ -109,50 +100,116 @@ class SOLUTION:
                     if ("_" + linkToJoin) in k:
                         grandParAxis = grandConnections[k]
 
-                # Joints   
+               
                 if (linkToJoin == "Link0"):
                     if (jointPositionAxis == 0):
                         pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0], linkLenInfo[linkToJoin][1]/2, linkLenInfo[linkToJoin][2]/2], jointAxis = "1 0 0")
                     elif (jointPositionAxis == 1):
                         pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, linkLenInfo[linkToJoin][1], linkLenInfo[linkToJoin][2]/2], jointAxis = "0 1 0")
-                    else:
+                    elif (jointPositionAxis == 2):
                         pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, linkLenInfo[linkToJoin][1]/2, linkLenInfo[linkToJoin][2]], jointAxis = "0 0 1")
-                    
+                    elif (jointPositionAxis == 3):
+                        pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [0, linkLenInfo[linkToJoin][1]/2, linkLenInfo[linkToJoin][2]/2], jointAxis = "1 0 0")
+                    elif (jointPositionAxis == 4):
+                        pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, 0, linkLenInfo[linkToJoin][2]/2], jointAxis = "0 1 0")
+                    else:                        
+                        pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, linkLenInfo[linkToJoin][1]/2, 0], jointAxis = "0 1 0")
+
+
                 elif(grandParAxis == jointPositionAxis):
                     if (jointPositionAxis == 0):
                         pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0],0,0], jointAxis = "1 0 0")
                     elif (jointPositionAxis == 1):
                         pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [0,linkLenInfo[linkToJoin][1],0], jointAxis = "0 1 0")
-                    else:
+                    elif (jointPositionAxis == 2):
                         pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [0,0,linkLenInfo[linkToJoin][2]], jointAxis = "0 0 1")
-                
+                    elif (jointPositionAxis == 3):
+                        pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [-(linkLenInfo[linkToJoin][0]),0,0], jointAxis = "1 0 0")
+                    elif (jointPositionAxis == 4):
+                        pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [0,-(linkLenInfo[linkToJoin][1]),0], jointAxis = "0 1 0")
+                    else:
+                        pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [0,0,-(linkLenInfo[linkToJoin][2])], jointAxis = "0 0 1")
+                    
+
+
                 else:
                     if (grandParAxis == 0):
                         if (jointPositionAxis == 1):
                             pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, linkLenInfo[linkToJoin][1]/2, 0], jointAxis = "0 1 0")
-                        else:
+                        elif (jointPositionAxis == 2):
                             pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, 0, linkLenInfo[linkToJoin][2]/2], jointAxis = "0 0 1")
+                        elif (jointPositionAxis == 4):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, -(linkLenInfo[linkToJoin][1]/2), 0], jointAxis = "0 1 0")
+                        elif (jointPositionAxis == 5):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, 0, -(linkLenInfo[linkToJoin][2]/2)], jointAxis = "0 0 1")
+                        
                     elif (grandParAxis == 1):
                         if (jointPositionAxis == 0):
                             pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, linkLenInfo[linkToJoin][1]/2, 0], jointAxis = "1 0 0")
-                        else:
+                        elif (jointPositionAxis == 2):
                             pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [0, linkLenInfo[linkToJoin][1]/2, linkLenInfo[linkToJoin][2]/2], jointAxis = "0 0 1")
-                    else:
+                        elif (jointPositionAxis == 3):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [-(linkLenInfo[linkToJoin][0]/2), linkLenInfo[linkToJoin][1]/2, 0], jointAxis = "1 0 0")
+                        elif (jointPositionAxis == 5):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [0, linkLenInfo[linkToJoin][1]/2, -(linkLenInfo[linkToJoin][2]/2)], jointAxis = "0 0 1")
+                    
+                    
+                    elif (grandParAxis == 2):
                         if (jointPositionAxis == 0):
                             pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, 0,  linkLenInfo[linkToJoin][2]/2], jointAxis = "1 0 0")
-                        else:
-                            pyrosim.Send_Joint(name = linkToJoin + "_" + link, parent = linkToJoin  , child = link , type = "revolute", position = [0, linkLenInfo[linkToJoin][1]/2, linkLenInfo[linkToJoin][2]/2], jointAxis = "0 1 0")
+                        elif (jointPositionAxis == 1):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [0, linkLenInfo[linkToJoin][1]/2, linkLenInfo[linkToJoin][2]/2], jointAxis = "0 1 0")
+                        elif (jointPositionAxis == 3):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [-(linkLenInfo[linkToJoin][0]/2), 0,  linkLenInfo[linkToJoin][2]/2], jointAxis = "1 0 0")
+                        elif (jointPositionAxis == 4):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [0, -(linkLenInfo[linkToJoin][1]/2), linkLenInfo[linkToJoin][2]/2], jointAxis = "0 1 0")
                         
-                # Next link
+                    # Negative Grand Axises
+                    elif (grandParAxis == 3):
+                        if (jointPositionAxis == 1):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [-(linkLenInfo[linkToJoin][0]/2), linkLenInfo[linkToJoin][1]/2, 0], jointAxis = "0 1 0")
+                        elif (jointPositionAxis == 2):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [-(linkLenInfo[linkToJoin][0]/2), 0, linkLenInfo[linkToJoin][2]/2], jointAxis = "0 0 1")
+                        elif (jointPositionAxis == 4):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [-(linkLenInfo[linkToJoin][0]/2), -(linkLenInfo[linkToJoin][1]/2), 0], jointAxis = "0 1 0")
+                        elif (jointPositionAxis == 5):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [-(linkLenInfo[linkToJoin][0]/2), 0, -(linkLenInfo[linkToJoin][2]/2)], jointAxis = "0 0 1")
+                        
+                    elif (grandParAxis == 4):
+                        if (jointPositionAxis == 0):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, -(linkLenInfo[linkToJoin][1]/2), 0], jointAxis = "1 0 0")
+                        elif (jointPositionAxis == 2):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [0, -(linkLenInfo[linkToJoin][1]/2), linkLenInfo[linkToJoin][2]/2], jointAxis = "0 0 1")
+                        elif (jointPositionAxis == 3):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [-(linkLenInfo[linkToJoin][0]/2), -(linkLenInfo[linkToJoin][1]/2), 0], jointAxis = "1 0 0")
+                        elif (jointPositionAxis == 5):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [0, -(linkLenInfo[linkToJoin][1]/2), -(linkLenInfo[linkToJoin][2]/2)], jointAxis = "0 0 1")
+                    
+                    else:
+                        if (jointPositionAxis == 0):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin , child = link , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, 0,  -(linkLenInfo[linkToJoin][2]/2)], jointAxis = "1 0 0")
+                        elif (jointPositionAxis == 1):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [0, linkLenInfo[linkToJoin][1]/2, -(linkLenInfo[linkToJoin][2]/2)], jointAxis = "0 1 0")
+                        elif (jointPositionAxis == 3):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link, parent = linkToJoin , child = link , type = "revolute", position = [-(linkLenInfo[linkToJoin][0]/2), 0,  -(linkLenInfo[linkToJoin][2]/2)], jointAxis = "1 0 0")
+                        elif (jointPositionAxis == 4):
+                            pyrosim.Send_Joint(name = linkToJoin + "_" + link , parent = linkToJoin  , child = link , type = "revolute", position = [0, -(linkLenInfo[linkToJoin][1]/2), -(linkLenInfo[linkToJoin][2]/2)], jointAxis = "0 1 0")
+                        
+
                 if (jointPositionAxis == 0):
                     pyrosim.Send_Cube(name = link, pos=[length/2,0,0] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
                 elif (jointPositionAxis == 1):
                     pyrosim.Send_Cube(name = link, pos=[0,width/2,0] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
-                else:
+                elif (jointPositionAxis == 2):
                     pyrosim.Send_Cube(name = link, pos=[0,0,height/2] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
+                # Negative Axis Links
+                elif (jointPositionAxis == 3):
+                    pyrosim.Send_Cube(name = link, pos=[-(length/2),0,0] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
+                elif (jointPositionAxis == 4):
+                    pyrosim.Send_Cube(name = link, pos=[0,-(width/2),0] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
+                else:
+                    pyrosim.Send_Cube(name = link, pos=[0,0,-(height/2)] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
                 
-        
-                # print(LinkJoitLink, "childd Linkk")
                 b = 1
                 g = 0
                 tag = "Cyan"
@@ -183,7 +240,7 @@ class SOLUTION:
         connections = []
         grandConnections = {}
         self.LinkJointLink = []
-        locationMatrix = self.locationMatrix
+        locationMatrix = self.locationMatrix.copy()
 
         minX = 0
         minY = 0
@@ -228,10 +285,7 @@ class SOLUTION:
                 linkLenInfo["Link" + str(i)] = [length, width, height,[minX,maxX],[minY,maxY],[minZ,maxZ]]
                 linksAdded.append("Link" + str(i))
                 result = numpy.where(numpy.logical_and(locationMatrix>0, locationMatrix<2))
-                # result = numpy.where(locationMatrix=1)
-                print(result, "1st")
-                print(locationMatrix[20,20,0],"yesss")
-                print(locationMatrix.shape)
+                
                 b = 1
                 g = 0
                 tag = "Cyan"
@@ -239,9 +293,7 @@ class SOLUTION:
                
             else:
                 while(flag2 == 1):
-                    # jointPositionAxis = random.choice([0, 1, 2, 3, 4, 5])
-                    # jointPositionAxis = random.choice([0, 1])
-                    jointPositionAxis = 3
+                    jointPositionAxis = random.choice([0, 1, 2, 3, 4, 5])
                     linkToJoin = random.choice(linksAdded)
 
                     if ([jointPositionAxis,linkToJoin] in connections):
@@ -256,6 +308,9 @@ class SOLUTION:
                         MidPointZ = (linkToJoinPointZ[0]+linkToJoinPointZ[1])/2
 
                         tempLocationMatrix = locationMatrix.copy()
+
+                        inner_flag1 = 0
+                        inner_flag2 = 0
                         
                         if jointPositionAxis == 0:
                             minX = linkToJoinPointX[1]
@@ -264,6 +319,13 @@ class SOLUTION:
                             maxY = minY + width
                             minZ = MidPointZ - height/2
                             maxZ = minZ + height
+                            if (minX < 0) or (minY < 0) or (minZ < 0):
+                                flag2 = 1
+                                tempLocationMatrix = locationMatrix.copy()
+                                length = random.randint(1,2) 
+                                width = random.randint(1,2) 
+                                height = random.randint(1,2) 
+                                inner_flag1 = 1
 
                             for x2 in range(math.ceil(maxX) - math.floor(minX)):
                                 for y2 in range(math.ceil(maxY) - math.floor(minY)):
@@ -274,34 +336,34 @@ class SOLUTION:
                                             if (locationMatrix[math.floor(x2 + linkToJoinPointX[1]), math.floor(MidPointY - width/2 + y2), math.floor(MidPointZ - height/2 + z2)] == 1):           
                                                 flag2 = 1
                                                 tempLocationMatrix = locationMatrix.copy()
+                                                inner_flag1 = 1
                                                 break
                                             else:
                                                 flag2 = 0
-                                                # minX = linkToJoinPointX[1]
-                                                # maxX = minX + length
-                                                # minY = MidPointY - width/2
-                                                # maxY = minY + width
-                                                # minZ = MidPointZ - height/2
-                                                # maxZ = minZ + height
+                                            
                                                 tempLocationMatrix[math.floor(x2 + linkToJoinPointX[1]), math.floor(MidPointY - width/2 + y2), math.floor(MidPointZ - height/2 + z2)] = 1
+                                        
+
 
 
                                         # if (locationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] == positionTaken).all():
                                         elif (locationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] == 1):           
                                             flag2 = 1
                                             tempLocationMatrix = locationMatrix.copy()
+                                            inner_flag1 = 1
                                             break
 
                                         else:
                                             flag2 = 0
-                                            # minX = linkToJoinPointX[1]
-                                            # maxX = minX + length
-                                            # minY = MidPointY - width/2
-                                            # maxY = minY + width
-                                            # minZ = MidPointZ - height/2
-                                            # maxZ = minZ + height
+                                        
                                             tempLocationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] = 1
 
+                                        if inner_flag1 == 1:
+                                            inner_flag2 = 1
+                                            flag2 = 1
+                                            break
+                                    if inner_flag2 == 1:
+                                            break
                                       
                         elif jointPositionAxis == 1:
                             minX = MidPointX - length/2
@@ -310,6 +372,13 @@ class SOLUTION:
                             maxY = minY + width
                             minZ = MidPointZ - height/2
                             maxZ = minZ + height
+                            if (minX < 0) or (minY < 0) or (minZ < 0):
+                                flag2 = 1
+                                tempLocationMatrix = locationMatrix.copy()
+                                length = random.randint(1,2) 
+                                width = random.randint(1,2) 
+                                height = random.randint(1,2) 
+                                inner_flag1 = 1
 
                             for x2 in range(math.ceil(maxX) - math.floor(minX)):
                                 for y2 in range(math.ceil(maxY) - math.floor(minY)):
@@ -320,16 +389,12 @@ class SOLUTION:
                                             if (locationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(y2 + linkToJoinPointY[1]), math.floor(MidPointZ - height/2 + z2)] == 1):
                                                 flag2 = 1
                                                 tempLocationMatrix = locationMatrix.copy()
+                                                inner_flag1 = 1
                                                 break
 
                                             else:
                                                 flag2 = 0
-                                                # minX = MidPointX - length/2
-                                                # maxX = minX + length
-                                                # minY = linkToJoinPointY[1]
-                                                # maxY = minY + width
-                                                # minZ = MidPointZ - height/2
-                                                # maxZ = minZ + height
+                                               
                                                 tempLocationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(y2 + linkToJoinPointY[1]), math.floor(MidPointZ - height/2 + z2)] = 1
 
 
@@ -337,17 +402,19 @@ class SOLUTION:
                                         elif (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(y2 + linkToJoinPointY[1]), math.ceil(MidPointZ - height/2 + z2)] == 1):
                                             flag2 = 1
                                             tempLocationMatrix = locationMatrix.copy()
+                                            inner_flag1 = 1
                                             break
 
                                         else:
                                             flag2 = 0
-                                            # minX = MidPointX - length/2
-                                            # maxX = minX + length
-                                            # minY = linkToJoinPointY[1]
-                                            # maxY = minY + width
-                                            # minZ = MidPointZ - height/2
-                                            # maxZ = minZ + height
+                                        
                                             tempLocationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(y2 + linkToJoinPointY[1]), math.ceil(MidPointZ - height/2 + z2)] = 1
+                                        if inner_flag1 == 1:
+                                            inner_flag2 = 1
+                                            flag2 = 1
+                                            break
+                                    if inner_flag2 == 1:
+                                            break
 
                         elif jointPositionAxis == 2:
                             minX = MidPointX - length/2
@@ -356,6 +423,13 @@ class SOLUTION:
                             maxY = minY + width
                             minZ = linkToJoinPointZ[1]
                             maxZ = minZ + height
+                            if (minX < 0) or (minY < 0) or (minZ < 0):
+                                flag2 = 1
+                                tempLocationMatrix = locationMatrix.copy()
+                                length = random.randint(1,2) 
+                                width = random.randint(1,2) 
+                                height = random.randint(1,2) 
+                                inner_flag1 = 1
 
                             for x2 in range(math.ceil(maxX) - math.floor(minX)):
                                 for y2 in range(math.ceil(maxY) - math.floor(minY)):
@@ -365,16 +439,12 @@ class SOLUTION:
                                             if (locationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(MidPointY - width/2 + y2), math.floor(z2 + linkToJoinPointZ[1])] == 1):                                            
                                                 flag2 = 1
                                                 tempLocationMatrix = locationMatrix.copy()
+                                                inner_flag1 = 1
                                                 break
 
                                             else:
                                                 flag2 = 0
-                                                # minX = MidPointX - length/2
-                                                # maxX = minX + length
-                                                # minY = MidPointY - width/2
-                                                # maxY = minY + width
-                                                # minZ = linkToJoinPointZ[1]
-                                                # maxZ = minZ + height
+                                                
                                                 tempLocationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(MidPointY - width/2 + y2), math.floor(z2 + linkToJoinPointZ[1])] = 1
                 
 
@@ -382,20 +452,22 @@ class SOLUTION:
                                         elif (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.ceil(z2 + linkToJoinPointZ[1])] == 1):                                            
                                             flag2 = 1
                                             tempLocationMatrix = locationMatrix.copy()
+                                            inner_flag1 = 1
                                             break
                                         else:
                                             flag2 = 0
-                                            # minX = MidPointX - length/2
-                                            # maxX = minX + length
-                                            # minY = MidPointY - width/2
-                                            # maxY = minY + width
-                                            # minZ = linkToJoinPointZ[1]
-                                            # maxZ = minZ + height
+                                        
                                             tempLocationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.ceil(z2 + linkToJoinPointZ[1])] = 1
-                        
+                                        if inner_flag1 == 1:
+                                            inner_flag2 = 1
+                                            flag2 = 1
+                                            break
+                                    if inner_flag2 == 1:
+                                            break
+
                         # Negative Axis
                         elif jointPositionAxis == 3:
-                            print("senttttt yesss please")
+                           
                             maxX = linkToJoinPointX[0]
                             minX = maxX - length
                             minY = MidPointY - width/2
@@ -405,45 +477,44 @@ class SOLUTION:
                             if (minX < 0) or (minY < 0) or (minZ < 0):
                                 flag2 = 1
                                 tempLocationMatrix = locationMatrix.copy()
-                                break
+                                length = random.randint(1,2) 
+                                width = random.randint(1,2) 
+                                height = random.randint(1,2)  
+                                inner_flag1 = 1
 
-                            for x2 in range(math.floor(maxX) - math.floor(minX)):
+                            for x2 in range(1,math.floor(maxX) - math.floor(minX)+1):
                                 for y2 in range(math.ceil(maxY) - math.floor(minY)):
                                     for z2 in range(math.ceil(maxZ) - math.floor(minZ)):
 
                                         if (x2 == 0) or (y2 == 0) or (z2 == 0):
 
-                                            if (locationMatrix[math.ceil(linkToJoinPointX[0] - x2), math.floor(MidPointY - width/2 + y2), math.floor(MidPointZ - height/2 + z2)] == 1):           
+                                            if (locationMatrix[math.floor(linkToJoinPointX[0] - x2), math.floor(MidPointY - width/2 + y2), math.floor(MidPointZ - height/2 + z2)] == 1):           
                                                 flag2 = 1
                                                 tempLocationMatrix = locationMatrix.copy()
+                                                inner_flag1 = 1
+
+                                                
                                                 break
                                             else:
                                                 flag2 = 0
-                                                # minX = linkToJoinPointX[1]
-                                                # maxX = minX + length
-                                                # minY = MidPointY - width/2
-                                                # maxY = minY + width
-                                                # minZ = MidPointZ - height/2
-                                                # maxZ = minZ + height
-                                                tempLocationMatrix[math.ceil(linkToJoinPointX[0] - x2), math.floor(MidPointY - width/2 + y2), math.floor(MidPointZ - height/2 + z2)] = 1
+                                                tempLocationMatrix[math.floor(linkToJoinPointX[0] - x2), math.floor(MidPointY - width/2 + y2), math.floor(MidPointZ - height/2 + z2)] = 1
 
 
-                                        # if (locationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] == positionTaken).all():
                                         elif (locationMatrix[math.floor(linkToJoinPointX[0] - x2), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] == 1):           
                                             flag2 = 1
                                             tempLocationMatrix = locationMatrix.copy()
+                                            inner_flag1 = 1
                                             break
 
                                         else:
                                             flag2 = 0
-                                            # minX = linkToJoinPointX[1]
-                                            # maxX = minX + length
-                                            # minY = MidPointY - width/2
-                                            # maxY = minY + width
-                                            # minZ = MidPointZ - height/2
-                                            # maxZ = minZ + height
                                             tempLocationMatrix[math.floor(linkToJoinPointX[0] - x2), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] = 1
-
+                                        if inner_flag1 == 1:
+                                            inner_flag2 = 1
+                                            flag2 = 1
+                                            break
+                                    if inner_flag2 == 1:
+                                            break
                                       
                         elif jointPositionAxis == 4:
                             minX = MidPointX - length/2
@@ -456,10 +527,13 @@ class SOLUTION:
                             if (minX < 0) or (minY < 0) or (minZ < 0):
                                 flag2 = 1
                                 tempLocationMatrix = locationMatrix.copy()
-                                break
+                                length = random.randint(1,2) 
+                                width = random.randint(1,2) 
+                                height = random.randint(1,2) 
+                                inner_flag1 = 1
 
                             for x2 in range(math.ceil(maxX) - math.floor(minX)):
-                                for y2 in range(math.floor(maxY) - math.floor(minY)):
+                                for y2 in range(1,math.floor(maxY) - math.floor(minY)+1):
                                     for z2 in range(math.ceil(maxZ) - math.floor(minZ)):
                                         
                                         if (x2 == 0) or (y2 == 0) or (z2 == 0):
@@ -467,34 +541,29 @@ class SOLUTION:
                                             if (locationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(linkToJoinPointY[0] - y2), math.floor(MidPointZ - height/2 + z2)] == 1):
                                                 flag2 = 1
                                                 tempLocationMatrix = locationMatrix.copy()
+                                                inner_flag1 = 1
                                                 break
 
                                             else:
                                                 flag2 = 0
-                                                # minX = MidPointX - length/2
-                                                # maxX = minX + length
-                                                # minY = linkToJoinPointY[1]
-                                                # maxY = minY + width
-                                                # minZ = MidPointZ - height/2
-                                                # maxZ = minZ + height
                                                 tempLocationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(linkToJoinPointY[0] - y2), math.floor(MidPointZ - height/2 + z2)] = 1
 
 
-                                        # if (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(y2 + linkToJoinPointY[1]), math.ceil(MidPointZ - height/2 + z2)] == positionTaken).all():
                                         elif (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.floor(linkToJoinPointY[0] - y2), math.ceil(MidPointZ - height/2 + z2)] == 1):
                                             flag2 = 1
                                             tempLocationMatrix = locationMatrix.copy()
+                                            inner_flag1 = 1
                                             break
 
                                         else:
                                             flag2 = 0
-                                            # minX = MidPointX - length/2
-                                            # maxX = minX + length
-                                            # minY = linkToJoinPointY[1]
-                                            # maxY = minY + width
-                                            # minZ = MidPointZ - height/2
-                                            # maxZ = minZ + height
                                             tempLocationMatrix[math.ceil(MidPointX - length/2 + x2), math.floor(linkToJoinPointY[0] - y2), math.ceil(MidPointZ - height/2 + z2)] = 1
+                                        if inner_flag1 == 1:
+                                            inner_flag2 = 1
+                                            flag2 = 1
+                                            break
+                                    if inner_flag2 == 1:
+                                            break
 
                         else:
                             minX = MidPointX - length/2
@@ -506,26 +575,25 @@ class SOLUTION:
                             if (minX < 0) or (minY < 0) or (minZ < 0):
                                 flag2 = 1
                                 tempLocationMatrix = locationMatrix.copy()
-                                break
+                                length = random.randint(1,2) 
+                                width = random.randint(1,2) 
+                                height = random.randint(1,2) 
+                                inner_flag1 = 1
                                 
                             for x2 in range(math.ceil(maxX) - math.floor(minX)):
                                 for y2 in range(math.ceil(maxY) - math.floor(minY)):
-                                    for z2 in range(math.floor(maxZ) - math.floor(minZ)):
+                                    for z2 in range(1,math.floor(maxZ) - math.floor(minZ)+1):
                                         
                                         if (x2 == 0) or (y2 == 0) or (z2 == 0):
                                             if (locationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(MidPointY - width/2 + y2), math.floor(linkToJoinPointZ[1] - z2)] == 1):                                            
                                                 flag2 = 1
                                                 tempLocationMatrix = locationMatrix.copy()
+                                                inner_flag1 = 1
                                                 break
 
                                             else:
                                                 flag2 = 0
-                                                # minX = MidPointX - length/2
-                                                # maxX = minX + length
-                                                # minY = MidPointY - width/2
-                                                # maxY = minY + width
-                                                # minZ = linkToJoinPointZ[1]
-                                                # maxZ = minZ + height
+                                               
                                                 tempLocationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(MidPointY - width/2 + y2), math.floor(linkToJoinPointZ[1] - z2)] = 1
                 
 
@@ -533,36 +601,31 @@ class SOLUTION:
                                         elif (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.floor(linkToJoinPointZ[1] - z2)] == 1):                                            
                                             flag2 = 1
                                             tempLocationMatrix = locationMatrix.copy()
+                                            inner_flag1 = 1
                                             break
                                         else:
                                             flag2 = 0
-                                            # minX = MidPointX - length/2
-                                            # maxX = minX + length
-                                            # minY = MidPointY - width/2
-                                            # maxY = minY + width
-                                            # minZ = linkToJoinPointZ[1]
-                                            # maxZ = minZ + height
+                                        
                                             tempLocationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.floor(linkToJoinPointZ[1] - z2)] = 1
-                
+                                        if inner_flag1 == 1:
+                                            inner_flag2 = 1
+                                            flag2 = 1
+                                            break
+                                    if inner_flag2 == 1:
+                                            break
 
 
                 locationMatrix = tempLocationMatrix.copy()
                 result = numpy.where(numpy.logical_and(locationMatrix>0, locationMatrix<2))
-                print(result, "Array")
 
                                             
                 linkLenInfo["Link" + str(i)] = [length, width, height,[minX,maxX],[minY,maxY],[minZ,maxZ]]
-                print(linkLenInfo, "Link Info")
 
                 linksAdded.append("Link" + str(i))
                 connections.append([jointPositionAxis,linkToJoin])  
                 grandConnections[linkToJoin+"_"+"Link"+ str(i)] = jointPositionAxis
                 self.connections = connections
-                # print(grandConnections)
-                
-                # LinkJointLinkRev = self.LinkJointLink.copy()
-                # LinkJointLinkRev = LinkJointLinkRev.reverse()
-                # print(LinkJointLinkRev, "reversed")
+             
                 for li in reversed(range(len(self.LinkJointLink))) :
                     if ("_"+linkToJoin) in self.LinkJointLink[li]:
                         grandparentLink = self.LinkJointLink[li]
@@ -578,11 +641,13 @@ class SOLUTION:
                     elif (jointPositionAxis == 2):
                         pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, linkLenInfo[linkToJoin][1]/2, linkLenInfo[linkToJoin][2]], jointAxis = "0 0 1")
                     elif (jointPositionAxis == 3):
-                        print("senttttt yesss workssss")
                         pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [0, linkLenInfo[linkToJoin][1]/2, linkLenInfo[linkToJoin][2]/2], jointAxis = "1 0 0")
                     elif (jointPositionAxis == 4):
                         pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, 0, linkLenInfo[linkToJoin][2]/2], jointAxis = "0 1 0")
-                    
+                    else:
+                        pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [linkLenInfo[linkToJoin][0]/2, linkLenInfo[linkToJoin][1]/2, 0], jointAxis = "0 1 0")
+
+
 
                 elif(grandParAxis == jointPositionAxis):
                     if (jointPositionAxis == 0):
@@ -592,7 +657,6 @@ class SOLUTION:
                     elif (jointPositionAxis == 2):
                         pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin  , child = "Link" + str(i) , type = "revolute", position = [0,0,linkLenInfo[linkToJoin][2]], jointAxis = "0 0 1")
                     elif (jointPositionAxis == 3):
-                        print("senttttt yesss")
                         pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [-(linkLenInfo[linkToJoin][0]),0,0], jointAxis = "1 0 0")
                     elif (jointPositionAxis == 4):
                         pyrosim.Send_Joint(name = linkToJoin + "_" + "Link" + str(i) , parent = linkToJoin , child = "Link" + str(i) , type = "revolute", position = [0,-(linkLenInfo[linkToJoin][1]),0], jointAxis = "0 1 0")
@@ -673,27 +737,22 @@ class SOLUTION:
                     pyrosim.Send_Cube(name = "Link" +str(i), pos=[0,0,height/2] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
                 # Negative Axis Links
                 elif (jointPositionAxis == 3):
-                    print("senttttt")
                     pyrosim.Send_Cube(name = "Link" +str(i), pos=[-(length/2),0,0] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
                 elif (jointPositionAxis == 4):
                     pyrosim.Send_Cube(name = "Link" +str(i), pos=[0,-(width/2),0] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
                 else:
                     pyrosim.Send_Cube(name = "Link" +str(i), pos=[0,0,-(height/2)] , size=[length,width,height], mass = 1, tag = tag, color = [r, g, b ,a ])
-                
                 self.LinkJointLink.append(linkToJoin + "_" + "Link" + str(i))
-                # print(self.LinkJointLink, "straight")
                 b = 1
                 g = 0
                 tag = "Cyan"
                 flag2 = 1
-                # print(self.LinkJointLink, "Okayy")
                 
-
+        self.locationMatrix = locationMatrix.copy()
         self.linkLenInfo = linkLenInfo
         self.grandConnections = grandConnections
         self.randSensorsList = c.randSensorsList
         self.linksAdded = linksAdded
-        print("newGenerated")
 
         pyrosim.End()
 
@@ -718,24 +777,22 @@ class SOLUTION:
 
     def Create_Child_Brain(self):
         pyrosim.Start_NeuralNetwork("brain"+str(self.myID)+".nndf")
-        
         counter = 0
         numLinks = len(self.linksAdded)
         for i in range(0,numLinks):
             if (self.randSensorsList[i] == 1):
                 pyrosim.Send_Sensor_Neuron(name = counter , linkName = self.linksAdded[i])
                 counter += 1
-
         LinkJointLink = self.grandConnections.keys()
         listLJL = list(LinkJointLink)
         numSensorNeurons = self.randSensorsList.count(1)
         for j in range(0,numLinks - 1):
             pyrosim.Send_Motor_Neuron( name = j + numSensorNeurons  , jointName = listLJL[j])
-
+        
         for currentRow in range(0,numSensorNeurons):
-            for currentColumn in range(0,numLinks):
-                    pyrosim.Send_Synapse( sourceNeuronName = currentRow , targetNeuronName = currentColumn + numSensorNeurons - 1 , weight = self.weights[currentRow][currentColumn])
-
+            for currentColumn in range(0,numLinks-1):
+                    pyrosim.Send_Synapse( sourceNeuronName = currentRow , targetNeuronName = currentColumn + numSensorNeurons , weight = self.weights[currentRow][currentColumn])
+                   
         pyrosim.End()
 
 
@@ -746,17 +803,23 @@ class SOLUTION:
         linksAdded = self.linksAdded
         LinkJoitLink = grandConnections.keys()
         LinkJoiNtLink = list(LinkJoitLink)
-        locationMatrix = self.locationMatrix
+        locationMatrix = self.locationMatrix.copy()
         connections = self.connections
 
-
+        # 0 - Remove Link/ 1 - Add Link/ 2 - None
         add_remove_none = 2
-        if len(LinkJoiNtLink) > 3:
+        if len(LinkJoiNtLink) > 3 and len(LinkJoiNtLink) < self.max_links:
             add_remove_none = random.choice([0, 1, 2])
             # add_remove_none = 0
+        elif len(LinkJoiNtLink) > 3 and len(LinkJoiNtLink) >= self.max_links:
+            add_remove_none = random.choice([0, 2])
+        elif len(LinkJoiNtLink) < 3:
+            add_remove_none = random.choice([1, 2])
+
+
 
         # Remove Link
-        # 0 - Remove Link/ 1 - Add Link/ 2 - None
+      
         if (add_remove_none == 0):
             LinksWithChild = []
             for li in linksAdded:
@@ -774,110 +837,368 @@ class SOLUTION:
                     LinkJoitLinkToRemove = lj
                     break
 
-            # del LinkJoiNtLink[LinkJoitLinkToRemove]
+           
             del grandConnections[LinkJoitLinkToRemove]
-            # print(LinkJoitLinkToRemove,"removedd")
-            # Remove from location Matrix
+           
 
 
 
-        # elif(add_remove_none == 1):
-        #     flag2 =1
-        #     while(flag2 == 1):
-        #         jointPositionAxis = random.choice([0, 1, 2])
-        #         # jointPositionAxis = random.choice([0, 1])
-        #         # jointPositionAxis = 0
-        #         linkToJoin = random.choice(linksAdded)
+        elif(add_remove_none == 1):
+            length = random.randint(1,2) 
+            width = random.randint(1,2) 
+            height = random.randint(1,2) 
+            flag2 = 1
+            while(flag2 == 1):
+                jointPositionAxis = random.choice([0, 1, 2, 3, 4, 5])
+                
+                linkToJoin = random.choice(linksAdded)
 
-        #         if ([jointPositionAxis,linkToJoin] in connections):
-        #             pass
-        #         else:
-        #             linkToJoinPointX = linkLenInfo[linkToJoin][3]
-        #             linkToJoinPointY = linkLenInfo[linkToJoin][4]
-        #             linkToJoinPointZ = linkLenInfo[linkToJoin][5]
+                if ([jointPositionAxis,linkToJoin] in connections):
+                    pass
+                else:
+                    linkToJoinPointX = linkLenInfo[linkToJoin][3]
+                    linkToJoinPointY = linkLenInfo[linkToJoin][4]
+                    linkToJoinPointZ = linkLenInfo[linkToJoin][5]
 
-        #             MidPointX = (linkToJoinPointX[0]+linkToJoinPointX[1])/2
-        #             MidPointY = (linkToJoinPointY[0]+linkToJoinPointY[1])/2
-        #             MidPointZ = (linkToJoinPointZ[0]+linkToJoinPointZ[1])/2
+                    MidPointX = (linkToJoinPointX[0]+linkToJoinPointX[1])/2
+                    MidPointY = (linkToJoinPointY[0]+linkToJoinPointY[1])/2
+                    MidPointZ = (linkToJoinPointZ[0]+linkToJoinPointZ[1])/2
 
-        #             tempLocationMatrix = locationMatrix.copy()
-        #             positionTaken = numpy.array([1,1,1])
-        #             if jointPositionAxis == 0:
-        #                 for x2 in range(length):
-        #                     for y2 in range(width):
-        #                         for z2 in range(height):
+                    tempLocationMatrix = locationMatrix.copy()
 
-                                    
-        #                             if (locationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] == positionTaken).all():
-        #                                 flag2 = 1
-        #                                 tempLocationMatrix = locationMatrix.copy()
+                    inner_flag1 = 0
+                    inner_flag2 = 0
+                    
+                    if jointPositionAxis == 0:
+                        minX = linkToJoinPointX[1]
+                        maxX = minX + length
+                        minY = MidPointY - width/2
+                        maxY = minY + width
+                        minZ = MidPointZ - height/2
+                        maxZ = minZ + height
+                        if (minX < 0) or (minY < 0) or (minZ < 0):
+                            flag2 = 1
+                            tempLocationMatrix = locationMatrix.copy()
+                            length = random.randint(1,2) 
+                            width = random.randint(1,2) 
+                            height = random.randint(1,2) 
+                            inner_flag1 = 1
 
-        #                                 break
-        #                             else:
-        #                                 flag2 = 0
-        #                                 minX = linkToJoinPointX[1]
-        #                                 maxX = minX + length
-        #                                 minY = MidPointY - width/2
-        #                                 maxY = minY + width
-        #                                 minZ = MidPointZ - height/2
-        #                                 maxZ = minZ + height
-        #                                 tempLocationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] = 1
+                        for x2 in range(math.ceil(maxX) - math.floor(minX)):
+                            for y2 in range(math.ceil(maxY) - math.floor(minY)):
+                                for z2 in range(math.ceil(maxZ) - math.floor(minZ)):
 
-                                    
-        #             elif jointPositionAxis == 1:
-        #                 for x2 in range(length):
-        #                     for y2 in range(width):
-        #                         for z2 in range(height):
-                                    
-        #                             if (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(y2 + linkToJoinPointY[1]), math.ceil(MidPointZ - height/2 + z2)] == positionTaken).all():
-        #                                 flag2 = 1
-        #                                 tempLocationMatrix = locationMatrix.copy()
+                                    if (x2 == 0) or (y2 == 0) or (z2 == 0):
 
-        #                                 break
-        #                             else:
-        #                                 flag2 = 0
-        #                                 minX = MidPointX - length/2
-        #                                 maxX = minX + length
-        #                                 minY = linkToJoinPointY[1]
-        #                                 maxY = minY + width
-        #                                 minZ = MidPointZ - height/2
-        #                                 maxZ = minZ + height
-        #                                 tempLocationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] = 1
-
-        #             else:
-        #                 for x2 in range(length):
-        #                     for y2 in range(width):
-        #                         for z2 in range(height):
-                                    
-        #                             if (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.ceil(z2 + linkToJoinPointZ[1])] == positionTaken).all():
-        #                                 flag2 = 1
-        #                                 tempLocationMatrix = locationMatrix.copy()
-        #                                 break
-        #                             else:
-        #                                 flag2 = 0
-        #                                 minX = MidPointX - length/2
-        #                                 maxX = minX + length
-        #                                 minY = MidPointY - width/2
-        #                                 maxY = minY + width
-        #                                 minZ = linkToJoinPointZ[1]
-        #                                 maxZ = minZ + height
-        #                                 tempLocationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] = 1
-            
-        #     locationMatrix = tempLocationMatrix.copy()
-
+                                        if (locationMatrix[math.floor(x2 + linkToJoinPointX[1]), math.floor(MidPointY - width/2 + y2), math.floor(MidPointZ - height/2 + z2)] == 1):           
+                                            flag2 = 1
+                                            tempLocationMatrix = locationMatrix.copy()
+                                            inner_flag1 = 1
+                                            break
+                                        else:
+                                            flag2 = 0
                                         
-        #     linkLenInfo["Link" + str(i)] = [length, width, height,[minX,maxX],[minY,maxY],[minZ,maxZ]]
+                                            tempLocationMatrix[math.floor(x2 + linkToJoinPointX[1]), math.floor(MidPointY - width/2 + y2), math.floor(MidPointZ - height/2 + z2)] = 1
+                                    
+
+
+
+                                    elif (locationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] == 1):           
+                                        flag2 = 1
+                                        tempLocationMatrix = locationMatrix.copy()
+                                        inner_flag1 = 1
+                                        break
+
+                                    else:
+                                        flag2 = 0
+                                    
+                                        tempLocationMatrix[math.ceil(x2 + linkToJoinPointX[1]), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] = 1
+
+                                    if inner_flag1 == 1:
+                                        inner_flag2 = 1
+                                        flag2 = 1
+                                        break
+                                if inner_flag2 == 1:
+                                        break
+                                    
+                    elif jointPositionAxis == 1:
+                        minX = MidPointX - length/2
+                        maxX = minX + length
+                        minY = linkToJoinPointY[1]
+                        maxY = minY + width
+                        minZ = MidPointZ - height/2
+                        maxZ = minZ + height
+                        if (minX < 0) or (minY < 0) or (minZ < 0):
+                            flag2 = 1
+                            tempLocationMatrix = locationMatrix.copy()
+                            length = random.randint(1,2) 
+                            width = random.randint(1,2) 
+                            height = random.randint(1,2) 
+                            inner_flag1 = 1
+
+                        for x2 in range(math.ceil(maxX) - math.floor(minX)):
+                            for y2 in range(math.ceil(maxY) - math.floor(minY)):
+                                for z2 in range(math.ceil(maxZ) - math.floor(minZ)):
+                                    
+                                    if (x2 == 0) or (y2 == 0) or (z2 == 0):
+
+                                        if (locationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(y2 + linkToJoinPointY[1]), math.floor(MidPointZ - height/2 + z2)] == 1):
+                                            flag2 = 1
+                                            tempLocationMatrix = locationMatrix.copy()
+                                            inner_flag1 = 1
+                                            break
+
+                                        else:
+                                            flag2 = 0
+                                            
+                                            tempLocationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(y2 + linkToJoinPointY[1]), math.floor(MidPointZ - height/2 + z2)] = 1
+
+
+                                    # if (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(y2 + linkToJoinPointY[1]), math.ceil(MidPointZ - height/2 + z2)] == positionTaken).all():
+                                    elif (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(y2 + linkToJoinPointY[1]), math.ceil(MidPointZ - height/2 + z2)] == 1):
+                                        flag2 = 1
+                                        tempLocationMatrix = locationMatrix.copy()
+                                        inner_flag1 = 1
+                                        break
+
+                                    else:
+                                        flag2 = 0
+                                    
+                                        tempLocationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(y2 + linkToJoinPointY[1]), math.ceil(MidPointZ - height/2 + z2)] = 1
+                                    if inner_flag1 == 1:
+                                        inner_flag2 = 1
+                                        flag2 = 1
+                                        break
+                                if inner_flag2 == 1:
+                                        break
+
+                    elif jointPositionAxis == 2:
+                        minX = MidPointX - length/2
+                        maxX = minX + length
+                        minY = MidPointY - width/2
+                        maxY = minY + width
+                        minZ = linkToJoinPointZ[1]
+                        maxZ = minZ + height
+                        if (minX < 0) or (minY < 0) or (minZ < 0):
+                            flag2 = 1
+                            tempLocationMatrix = locationMatrix.copy()
+                            length = random.randint(1,2) 
+                            width = random.randint(1,2) 
+                            height = random.randint(1,2) 
+                            inner_flag1 = 1
+
+                        for x2 in range(math.ceil(maxX) - math.floor(minX)):
+                            for y2 in range(math.ceil(maxY) - math.floor(minY)):
+                                for z2 in range(math.ceil(maxZ) - math.floor(minZ)):
+                                    
+                                    if (x2 == 0) or (y2 == 0) or (z2 == 0):
+                                        if (locationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(MidPointY - width/2 + y2), math.floor(z2 + linkToJoinPointZ[1])] == 1):                                            
+                                            flag2 = 1
+                                            tempLocationMatrix = locationMatrix.copy()
+                                            inner_flag1 = 1
+                                            break
+
+                                        else:
+                                            flag2 = 0
+                                            
+                                            tempLocationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(MidPointY - width/2 + y2), math.floor(z2 + linkToJoinPointZ[1])] = 1
             
 
-        #     linksAdded.append("Link" + str(i))
-        #     connections.append([jointPositionAxis,linkToJoin])  
-        #     grandConnections[linkToJoin+"_"+"Link"+ str(i)] = jointPositionAxis
+                                    # if (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.ceil(z2 + linkToJoinPointZ[1])] == positionTaken).all():
+                                    elif (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.ceil(z2 + linkToJoinPointZ[1])] == 1):                                            
+                                        flag2 = 1
+                                        tempLocationMatrix = locationMatrix.copy()
+                                        inner_flag1 = 1
+                                        break
+                                    else:
+                                        flag2 = 0
+                                    
+                                        tempLocationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.ceil(z2 + linkToJoinPointZ[1])] = 1
+                                    if inner_flag1 == 1:
+                                        inner_flag2 = 1
+                                        flag2 = 1
+                                        break
+                                if inner_flag2 == 1:
+                                        break
+
+                    # Negative Axis
+                    elif jointPositionAxis == 3:
+                        
+                        maxX = linkToJoinPointX[0]
+                        minX = maxX - length
+                        minY = MidPointY - width/2
+                        maxY = minY + width
+                        minZ = MidPointZ - height/2
+                        maxZ = minZ + height
+                        if (minX < 0) or (minY < 0) or (minZ < 0):
+                            flag2 = 1
+                            tempLocationMatrix = locationMatrix.copy()
+                            length = random.randint(1,2) 
+                            width = random.randint(1,2) 
+                            height = random.randint(1,2)  
+                            inner_flag1 = 1
+
+                        for x2 in range(1,math.floor(maxX) - math.floor(minX)+1):
+                            for y2 in range(math.ceil(maxY) - math.floor(minY)):
+                                for z2 in range(math.ceil(maxZ) - math.floor(minZ)):
+
+                                    if (x2 == 0) or (y2 == 0) or (z2 == 0):
+
+                                        if (locationMatrix[math.floor(linkToJoinPointX[0] - x2), math.floor(MidPointY - width/2 + y2), math.floor(MidPointZ - height/2 + z2)] == 1):           
+                                            flag2 = 1
+                                            tempLocationMatrix = locationMatrix.copy()
+                                            inner_flag1 = 1
+                                            break
+                                        else:
+                                            flag2 = 0
+                                            tempLocationMatrix[math.floor(linkToJoinPointX[0] - x2), math.floor(MidPointY - width/2 + y2), math.floor(MidPointZ - height/2 + z2)] = 1
+
+
+                                    elif (locationMatrix[math.floor(linkToJoinPointX[0] - x2), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] == 1):           
+                                        flag2 = 1
+                                        tempLocationMatrix = locationMatrix.copy()
+                                        inner_flag1 = 1
+                                        break
+
+                                    else:
+                                        flag2 = 0
+                                        tempLocationMatrix[math.floor(linkToJoinPointX[0] - x2), math.ceil(MidPointY - width/2 + y2), math.ceil(MidPointZ - height/2 + z2)] = 1
+                                    if inner_flag1 == 1:
+                                        inner_flag2 = 1
+                                        flag2 = 1
+                                        break
+                                if inner_flag2 == 1:
+                                        break
+                                    
+                    elif jointPositionAxis == 4:
+                        minX = MidPointX - length/2
+                        maxX = minX + length
+                        maxY = linkToJoinPointY[0]
+                        minY = maxY - width
+                        minZ = MidPointZ - height/2
+                        maxZ = minZ + height
+
+                        if (minX < 0) or (minY < 0) or (minZ < 0):
+                            flag2 = 1
+                            tempLocationMatrix = locationMatrix.copy()
+                            length = random.randint(1,2) 
+                            width = random.randint(1,2) 
+                            height = random.randint(1,2) 
+                            inner_flag1 = 1
+
+                        for x2 in range(math.ceil(maxX) - math.floor(minX)):
+                            for y2 in range(1,math.floor(maxY) - math.floor(minY)+1):
+                                for z2 in range(math.ceil(maxZ) - math.floor(minZ)):
+                                    
+                                    if (x2 == 0) or (y2 == 0) or (z2 == 0):
+
+                                        if (locationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(linkToJoinPointY[0] - y2), math.floor(MidPointZ - height/2 + z2)] == 1):
+                                            flag2 = 1
+                                            tempLocationMatrix = locationMatrix.copy()
+                                            inner_flag1 = 1
+                                            break
+
+                                        else:
+                                            flag2 = 0
+                                            tempLocationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(linkToJoinPointY[0] - y2), math.floor(MidPointZ - height/2 + z2)] = 1
+
+
+                                    elif (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.floor(linkToJoinPointY[0] - y2), math.ceil(MidPointZ - height/2 + z2)] == 1):
+                                        flag2 = 1
+                                        tempLocationMatrix = locationMatrix.copy()
+                                        inner_flag1 = 1
+                                        break
+
+                                    else:
+                                        flag2 = 0
+                                        tempLocationMatrix[math.ceil(MidPointX - length/2 + x2), math.floor(linkToJoinPointY[0] - y2), math.ceil(MidPointZ - height/2 + z2)] = 1
+                                    if inner_flag1 == 1:
+                                        inner_flag2 = 1
+                                        flag2 = 1
+                                        break
+                                if inner_flag2 == 1:
+                                        break
+
+                    else:
+                        minX = MidPointX - length/2
+                        maxX = minX + length
+                        minY = MidPointY - width/2
+                        maxY = minY + width
+                        maxZ = linkToJoinPointZ[0]
+                        minZ = maxZ - height
+                        if (minX < 0) or (minY < 0) or (minZ < 0):
+                            flag2 = 1
+                            tempLocationMatrix = locationMatrix.copy()
+                            length = random.randint(1,2) 
+                            width = random.randint(1,2) 
+                            height = random.randint(1,2) 
+                            inner_flag1 = 1
+                            
+                        for x2 in range(math.ceil(maxX) - math.floor(minX)):
+                            for y2 in range(math.ceil(maxY) - math.floor(minY)):
+                                for z2 in range(1,math.floor(maxZ) - math.floor(minZ)+1):
+                                    
+                                    if (x2 == 0) or (y2 == 0) or (z2 == 0):
+                                        if (locationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(MidPointY - width/2 + y2), math.floor(linkToJoinPointZ[1] - z2)] == 1):                                            
+                                            flag2 = 1
+                                            tempLocationMatrix = locationMatrix.copy()
+                                            inner_flag1 = 1
+                                            break
+
+                                        else:
+                                            flag2 = 0
+                                            
+                                            tempLocationMatrix[math.floor(MidPointX - length/2 + x2), math.floor(MidPointY - width/2 + y2), math.floor(linkToJoinPointZ[1] - z2)] = 1
+            
+
+                                    # if (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.ceil(z2 + linkToJoinPointZ[1])] == positionTaken).all():
+                                    elif (locationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.floor(linkToJoinPointZ[1] - z2)] == 1):                                            
+                                        flag2 = 1
+                                        tempLocationMatrix = locationMatrix.copy()
+                                        inner_flag1 = 1
+                                        break
+                                    else:
+                                        flag2 = 0
+                                    
+                                        tempLocationMatrix[math.ceil(MidPointX - length/2 + x2), math.ceil(MidPointY - width/2 + y2), math.floor(linkToJoinPointZ[1] - z2)] = 1
+                                    if inner_flag1 == 1:
+                                        inner_flag2 = 1
+                                        flag2 = 1
+                                        break
+                                if inner_flag2 == 1:
+                                        break
+
+
+            locationMatrix = tempLocationMatrix.copy()
+            i = 0
+            for l in linksAdded:
+                if ("Link" + str(i) in linksAdded):
+                    i = i+1
+                    pass
+                else:
+                    break
+            print("Link" + str(i))
+            locationMatrix = tempLocationMatrix.copy()
+            linkLenInfo["Link" + str(i)] = [length, width, height,[minX,maxX],[minY,maxY],[minZ,maxZ]]
+            print(linkLenInfo)
+            linksAdded.append("Link" + str(i))
+            connections.append([jointPositionAxis,linkToJoin])  
+            grandConnections[linkToJoin+"_"+"Link"+ str(i)] = jointPositionAxis
+            print(grandConnections)
+            self.connections = connections
+            randSensorsList.append(random.randint(0,1))
+
+     
+
+            
 
 
         self.linkLenInfo = linkLenInfo
         self.grandConnections = grandConnections
         self.randSensorsList = randSensorsList
         self.linksAdded = linksAdded
+        self.locationMatrix = locationMatrix.copy()
+        self.connections = connections
        
         numSensorNeurons = randSensorsList.count(1)
         randomRow =  random.randint(0,numSensorNeurons - 1)

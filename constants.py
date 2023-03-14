@@ -3,8 +3,8 @@ import random
 
 gravity = -9.8
 
-numpyseed = 548
-randomseed = 99876
+numpyseed = 34
+randomseed = 3456
 numpy.random.seed(numpyseed)
 random.seed(randomseed)
 
@@ -24,11 +24,11 @@ phaseOffsetFrontLeg = 0
 
 maxForceFrontLeg = 70
 
-numberOfGenerations = 1
+numberOfGenerations = 10
 
-populationSize = 1
+populationSize = 5
 
-numLinks = random.randint(3,8)
+numLinks = random.randint(2,8)
 
 randSensorsList = [1]
 for i in range(0,numLinks-1):
@@ -38,7 +38,7 @@ numSensorNeurons = randSensorsList.count(1)
 
 numMotorNeurons = numLinks
 
-motorJointRange = 0.5
+motorJointRange = 0.2
 
 counter = 0
 
