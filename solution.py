@@ -28,7 +28,8 @@ class SOLUTION:
     
 
     def Start_Simulation(self, DIR_GUI, child_true = 0):
-        self.Create_World()
+        if (self.myID == 0):
+            self.Create_World()
         if (child_true == 1):
             self.Create_Child_Body()
             self.Create_Child_Brain()

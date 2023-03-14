@@ -3,8 +3,8 @@ import random
 
 gravity = -9.8
 
-numpyseed = 799
-randomseed = 7787
+numpyseed = 45
+randomseed = 85
 numpy.random.seed(numpyseed)
 random.seed(randomseed)
 
