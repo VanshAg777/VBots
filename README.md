@@ -31,8 +31,7 @@ As the links are cuboids, each face can have a link attached to it by a joint. T
 <img width="237" alt="Fig3" src="https://user-images.githubusercontent.com/114874910/225195358-cd15c0e6-9977-4b1f-a237-979b1345f89e.png">
 
 ## Mutation
-Green - Sensors
-Blue - Motor
+Green - Sensors/Blue - Motor
 <img width="751" alt="FinalBeneficial" src="https://user-images.githubusercontent.com/114874910/225206123-3aedcda4-3185-4ea6-9734-dbe65a744479.png">
 
 
