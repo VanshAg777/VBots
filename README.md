@@ -11,22 +11,32 @@ It is randomly selected if a new link is to be added or an existing link has to 
 
 ## How to Run:
 Run **search.py** to simulate the results.
+
+## GIF
+![AILifeFinal](https://user-images.githubusercontent.com/114874910/225197330-44ed8c57-24db-419f-8170-7f0c12045863.gif)
+
+## YouTube
+https://youtu.be/byaxfnLWE7k
+
+## Parallel Hill climbing
+Each parent and child compete with the other. Ultimately, the bot with the best fitness is selected out of the population.
+<img width="448" alt="PHC" src="https://user-images.githubusercontent.com/114874910/225202111-fe6b8bb7-8517-45c9-8e37-01e946d08587.png">
+
+## Phenotype 
+The creature is made randomly.
 <img width="878" alt="3dAILife" src="https://user-images.githubusercontent.com/114874910/220258239-2e1e63d0-18e3-41b8-a610-55a132432249.png">
 
-## Graph 1:
-![GraphFinal1](https://user-images.githubusercontent.com/114874910/221763195-3ca975b6-aba3-4674-ba24-7000adf2eaf0.png)
+## Genotype 
+As the links are cuboids, each face can have a link attached to it by a joint. Therefore six links can be attached to a single link.
+<img width="237" alt="Fig3" src="https://user-images.githubusercontent.com/114874910/225195358-cd15c0e6-9977-4b1f-a237-979b1345f89e.png">
 
-## Graph 2:
-![Graph2Final](https://user-images.githubusercontent.com/114874910/221763244-a21c516a-315d-4d8e-9d0a-367da0f0eaa2.png)
+## Mutation
+Green - Sensors
+Blue - Motor
+<img width="751" alt="FinalBeneficial" src="https://user-images.githubusercontent.com/114874910/225206123-3aedcda4-3185-4ea6-9734-dbe65a744479.png">
 
-## Graph 3:
-![figure3final](https://user-images.githubusercontent.com/114874910/221763302-b852d1d0-ec54-4fe1-9206-811247fd94d0.png)
 
-## Graph 4:
-![GraphFinal4](https://user-images.githubusercontent.com/114874910/221763335-f055982c-521f-431e-bab5-88862789f746.png)
-
-## Graph 5:
-![graph5final](https://user-images.githubusercontent.com/114874910/221763386-8570daf6-0579-478d-9307-e9bd504518b5.png)
+## Graph 
 
 ## References:
 1. [Northwestern University - COMP_SCI 396: Artificial Life](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/396-2.html). 
