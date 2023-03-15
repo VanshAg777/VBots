@@ -12,6 +12,8 @@ It is randomly selected if a new link is to be added or an existing link has to 
 ## How to Run:
 Run **search.py** to simulate the results.
 
+The **Data folder** contains all the Bots saved as Pickles.
+
 ## GIF
 ![AILifeFinal](https://user-images.githubusercontent.com/114874910/225197330-44ed8c57-24db-419f-8170-7f0c12045863.gif)
 
@@ -32,12 +34,13 @@ As the links are cuboids, each face can have a link attached to it by a joint. T
 
 ## Mutation
 Green - Sensors/Blue - Motor
+
 <img width="751" alt="FinalBeneficial" src="https://user-images.githubusercontent.com/114874910/225206123-3aedcda4-3185-4ea6-9734-dbe65a744479.png">
 
 
 ## Graph 
-Seed 6 and Seed 10 reach the best fitness
-![GraphFinal](https://user-images.githubusercontent.com/114874910/225210789-d59ae60a-de83-4121-b90f-43e5ca0294c4.png)
+![figureFinalLabel](https://user-images.githubusercontent.com/114874910/225213683-9e11c5d7-d648-40f1-960c-c3e2d2509df2.png)
+
 
 ## References:
 1. [Northwestern University - COMP_SCI 396: Artificial Life](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/396-2.html). 
