@@ -36,6 +36,7 @@ Green - Sensors/Blue - Motor
 
 
 ## Graph 
+Seed 6 and Seed 10 reach the best fitness
 ![GraphFinal](https://user-images.githubusercontent.com/114874910/225210789-d59ae60a-de83-4121-b90f-43e5ca0294c4.png)
 
 ## References:
