@@ -71,7 +71,6 @@ class SOLUTION:
         a = 1
         linkLenInfo = self.linkLenInfo
         grandConnections =  self.grandConnections
-        print(grandConnections, "yaar")
 
         randSensorsList = self.randSensorsList
         linksAdded = self.linksAdded
@@ -1178,14 +1177,11 @@ class SOLUTION:
                     pass
                 else:
                     break
-            print("Link" + str(i))
             locationMatrix = tempLocationMatrix.copy()
             linkLenInfo["Link" + str(i)] = [length, width, height,[minX,maxX],[minY,maxY],[minZ,maxZ]]
-            print(linkLenInfo)
             linksAdded.append("Link" + str(i))
             connections.append([jointPositionAxis,linkToJoin])  
             grandConnections[linkToJoin+"_"+"Link"+ str(i)] = jointPositionAxis
-            print(grandConnections)
             self.connections = connections
             randSensorsList.append(random.randint(0,1))
 

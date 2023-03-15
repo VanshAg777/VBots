@@ -36,7 +36,7 @@ class SIMULATION:
             self.robot.Act(t)
             if self.directOrGUI == "GUI":
                 time.sleep( 1/6400 )
-                p.resetDebugVisualizerCamera( cameraDistance=7, cameraYaw=75, cameraPitch=-20, cameraTargetPosition=basePositionAndOrientation[0])
+                p.resetDebugVisualizerCamera( cameraDistance=7, cameraYaw=25, cameraPitch=-20, cameraTargetPosition=basePositionAndOrientation[0])
 
             # print(t) 
     
