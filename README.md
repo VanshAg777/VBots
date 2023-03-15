@@ -36,6 +36,7 @@ Green - Sensors/Blue - Motor
 
 
 ## Graph 
+![GraphFinal](https://user-images.githubusercontent.com/114874910/225210789-d59ae60a-de83-4121-b90f-43e5ca0294c4.png)
 
 ## References:
 1. [Northwestern University - COMP_SCI 396: Artificial Life](https://www.mccormick.northwestern.edu/computer-science/academics/courses/descriptions/396-2.html). 
